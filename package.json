@@ -1,0 +1,7 @@
+{
+  "name": "iberville",
+  "version": "0.0.1",
+  "description": "Experiment in generating a city map procedurally",
+  "repository": "https://github.com/NickHeiner/iberville",
+  "author": "Nick Heiner <nth23@cornell.edu>"
+}
