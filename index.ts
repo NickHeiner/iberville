@@ -36,7 +36,6 @@ function createCity(opts: ICreateCityOpts): Q.IPromise<void> {
                             'prop1': 0.0
                         }
                     },
-                    {fak: true},
                     { 'type': 'Feature',
                         'geometry': {
                             'type': 'Polygon',
