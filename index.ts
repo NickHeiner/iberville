@@ -1,6 +1,7 @@
 /// <reference path='./typings/tsd.d.ts' />
 
 const qFs = require('q-io/fs'),
+    q = require('q'),
     logger = require('./util/logger'),
     geoJsonHint = require('geojsonhint');
 
@@ -35,6 +36,7 @@ function createCity(opts: ICreateCityOpts): Q.IPromise<void> {
                             'prop1': 0.0
                         }
                     },
+                    {fak: true},
                     { 'type': 'Feature',
                         'geometry': {
                             'type': 'Polygon',
@@ -55,7 +57,9 @@ function createCity(opts: ICreateCityOpts): Q.IPromise<void> {
     if (errors.length) {
         const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');
         err.errors = errors;
-        throw err;
+        const deferred = q.defer();
+        deferred.reject(err);
+        return deferred.promise;
     }
 
     logger.info({geoJson: geoJson}, 'Writing geojson');
