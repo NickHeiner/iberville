@@ -2,14 +2,13 @@
 
 import getStreetGrid = require('./lib/get-street-grid');
 
+import './types';
+
 const qFs = require('q-io/fs'),
+    _ = require('lodash'),
     q = require('q'),
     logger = require('./util/logger'),
     geoJsonHint = require('geojsonhint');
-
-interface ICreateCityOpts {
-    outFileName: string;
-}
 
 interface IGeoJsonFormatError extends Error {
     errors: [{
@@ -18,11 +17,18 @@ interface IGeoJsonFormatError extends Error {
     }];
 }
 
-function createCity(opts: ICreateCityOpts): Q.IPromise<void> {
-    const geoJson = {
-        type: 'FeatureCollection',
-            features: getStreetGrid()
-        },
+function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
+    const opts = _.merge({}, {
+            centerCoordinates: {
+                lat: 0,
+                long: 0
+            },
+            radius: 1
+        }, rawOpts),
+        geoJson = {
+            type: 'FeatureCollection',
+                features: getStreetGrid(_.omit(opts, 'outFileName'))
+            },
         errors = geoJsonHint.hint(geoJson);
 
     if (errors.length) {

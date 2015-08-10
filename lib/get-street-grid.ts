@@ -1,16 +1,16 @@
-function getStreetGrid() {
+import '../types';
+
+function getStreetGrid(opts: IGenerateCityOpts) {
     return [{
         'type': 'Feature',
         'geometry': {
             'type': 'Point',
             'coordinates': [
-                102,
-                0.5
+                opts.centerCoordinates.lat,
+                opts.centerCoordinates.long
             ]
         },
-        'properties': {
-            'prop0': 'value0'
-        }
+        'properties': {}
     }];
 }
 
