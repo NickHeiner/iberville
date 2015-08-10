@@ -1,3 +1,5 @@
 /typings/
 **/*.js
 /node_modules/
+
+generated.geojson
