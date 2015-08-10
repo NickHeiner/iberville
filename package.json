@@ -3,5 +3,18 @@
   "version": "0.0.1",
   "description": "Experiment in generating a city map procedurally",
   "repository": "https://github.com/NickHeiner/iberville",
-  "author": "Nick Heiner <nth23@cornell.edu>"
+  "author": "Nick Heiner <nth23@cornell.edu>",
+  "bin": {
+    "create-city": "./bin/create-city.js"
+  },
+  "scripts": {
+    "pretest": "tslint -c tslint.json *.ts util/**/*.ts && tsc -p .",
+    "prepublish": "tsd reinstall",
+    "start": "./bin/create-city.js"
+  },
+  "devDependencies": {
+    "tsc": "^1.20150623.0",
+    "tsd": "^0.6.3",
+    "tslint": "^2.4.2"
+  }
 }
