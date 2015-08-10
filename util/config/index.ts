@@ -2,7 +2,6 @@
 
 const nconf = require('nconf'),
     _ = require('lodash'),
-    path = require('path'),
     flat = require('flat'),
     minimist = require('minimist'),
     traverse = require('traverse'),
@@ -36,7 +35,7 @@ function createConfig(rawArgv: string[]) {
     });
 
     return function get(key: string, defaultValue?: any): any {
-        var result = coerceValues(config.get(key));
+        let result = coerceValues(config.get(key));
 
         if (_.isUndefined(result)) {
             result = defaultValue;
@@ -52,11 +51,9 @@ function coerceValues(configData: any) {
             // Allow env vars to define boolean values
             if (value === 'true') {
                 this.update(true);
-            }
-            else if (value === 'false') {
+            } else if (value === 'false') {
                 this.update(false);
-            }
-            else if (value === 'undefined') {
+            } else if (value === 'undefined') {
                 this.update(void 0);
             }
         }

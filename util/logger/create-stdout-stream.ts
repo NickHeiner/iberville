@@ -6,7 +6,7 @@ const through2 = require('through2'),
     stripAnsi = require('strip-ansi');
 
 // The lodash.d.ts file declares _ as a global, so we can't use const for it here. Ugh.
-var _: _.LoDashStatic = require('lodash');
+let _: _.LoDashStatic = require('lodash');
 
 function createStdoutStream(out: NodeJS.WritableStream, logFormat: string) {
     const tapSafeLogOutput = through2(function(chunk: Buffer, enc: string, callback: Function) {

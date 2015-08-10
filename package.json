@@ -9,6 +9,7 @@
   },
   "scripts": {
     "pretest": "tslint -c tslint.json *.ts util/**/*.ts && tsc -p .",
+    "test": "echo \"no test yet\"",
     "prepublish": "tsd reinstall",
     "start": "./bin/create-city.js"
   },
