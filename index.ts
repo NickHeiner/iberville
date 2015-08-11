@@ -23,13 +23,16 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 lat: 0,
                 long: 0
             },
-            radius: 1
+            radius: .01,
+            blockSize: {
+                distance: .2,
+                units: 'miles'
+            }
         }, rawOpts),
-        geoJson = {
-            type: 'FeatureCollection',
-                features: getStreetGrid(_.omit(opts, 'outFileName'))
-            },
+        geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);
+
+    logger.info({geoJson: geoJson}, 'Produced geojson');
 
     if (errors.length) {
         const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');
@@ -38,8 +41,6 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         deferred.reject(err);
         return deferred.promise;
     }
-
-    logger.info({geoJson: geoJson}, 'Writing geojson');
 
     return qFs.write(opts.outFileName, JSON.stringify(geoJson, null, 2));
 }

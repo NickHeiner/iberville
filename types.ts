@@ -4,6 +4,10 @@ interface IGenerateCityOpts {
         long: number;
     };
     radius: number;
+    blockSize: {
+        distance: number;
+        units: string;
+    };
 }
 
 interface ICreateCityOpts extends IGenerateCityOpts {
