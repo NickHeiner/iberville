@@ -5,6 +5,8 @@ const _ = require('lodash'),
     simplexNoise = require('simplex-noise'),
     turfExtent = require('turf-extent'),
     turfPointGrid = require('turf-point-grid'),
+    turfSquareGrid = require('turf-square-grid'),
+    turfArea = require('turf-area'),
     turfFeatureCollection = require('turf-featurecollection');
 
 function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
@@ -55,7 +57,13 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             return unsubdividedPoly;
         }
 
-        return turfFeatureCollection([poly]);
+        const polyAreaMeters = turfArea(poly),
+            // This assumes that the poly is a square.
+            polySideLengthMeters = Math.sqrt(polyAreaMeters),
+            polyRadiusMeters = polySideLengthMeters / 2,
+            subdivided = turfSquareGrid(extent, polyRadiusMeters / 1000, 'kilometers');
+
+        return subdivided;
     }
 
     return increaseGridDensityRec(basePoly, 1);
