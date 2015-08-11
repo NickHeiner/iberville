@@ -42,6 +42,8 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         return deferred.promise;
     }
 
+    logger.info({outFile: opts.outFileName}, 'Writing geojson');
+
     return qFs.write(opts.outFileName, JSON.stringify(geoJson, null, 2));
 }
 
