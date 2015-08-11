@@ -25,7 +25,7 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             },
             radius: .04,
             blockSize: {
-                distance: .4,
+                distance: .8,
                 units: 'miles'
             }
         }, rawOpts),
