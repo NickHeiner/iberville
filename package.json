@@ -34,6 +34,7 @@
     "through2": "^2.0.0",
     "traverse": "^0.6.6",
     "turf-area": "^1.1.1",
-    "turf-centroid": "^1.1.2"
+    "turf-centroid": "^1.1.2",
+    "turf-polygon": "^1.0.3"
   }
 }

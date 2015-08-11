@@ -1,6 +1,7 @@
 const _ = require('lodash'),
     turfArea = require('turf-area'),
-    turfCentroid = require('turf-centroid');
+    turfCentroid = require('turf-centroid'),
+    turfPolygon = require('turf-polygon');
 
 interface IPolygon {
     type: string;
@@ -33,11 +34,16 @@ function iteratedSubdivison(basePolygon: IPolygon, maxArea, minArea) {
     }
 
     function bisect(polygon) {
-        const centroid = turfCentroid({
-            type: 'Feature',
-            properties: {},
-            geometry: polygon
-        });
+        const centroidCoords = turfCentroid({
+                type: 'Feature',
+                properties: {},
+                geometry: polygon
+            }).features[1].geometry.coordinates,
+            leftPolygon = turfPolygon([[
+                polygon.coordinates[0][0],
+                polygon.coordinates[0][1],
+                [polygon.coordinates[0][1][0], centroidCoords.coordinates[0][0]]
+            ]]);
     }
 
     function isOversized(polygon) {
