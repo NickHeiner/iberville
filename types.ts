@@ -4,9 +4,13 @@ interface IGenerateCityOpts {
         long: number;
     };
     radius: number;
-    blockSize: {
-        distance: number;
-        units: string;
+    seed: string;
+    streetGrid: {
+        noiseResolution: {
+            distance: number;
+            units: string;
+        }
+        noiseSubdivisionBaseThreshold: number;
     };
 }
 

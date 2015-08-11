@@ -11,11 +11,11 @@
     "q/Q.d.ts": {
       "commit": "db475daba23206e8cd0ac04d47f0764f4a62f7da"
     },
-    "lodash/lodash.d.ts": {
-      "commit": "db475daba23206e8cd0ac04d47f0764f4a62f7da"
-    },
     "bunyan/bunyan.d.ts": {
       "commit": "db475daba23206e8cd0ac04d47f0764f4a62f7da"
+    },
+    "geojson/geojson.d.ts": {
+      "commit": "3b0f362204ea965952dafdb682a5274d527ef9d0"
     }
   }
 }

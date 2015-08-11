@@ -24,10 +24,14 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 long: 0
             },
             radius: .04,
-            blockSize: {
-                distance: .8,
-                units: 'miles'
-            }
+            streetGrid: {
+                noiseResolution: {
+                    distance: .1,
+                    units: 'miles'
+                },
+                noiseSubdivisionBaseThreshold: .00001
+            },
+            seed: 'default-seed'
         }, rawOpts),
         geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);

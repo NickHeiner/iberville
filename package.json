@@ -20,6 +20,7 @@
     "tslint": "^2.4.2"
   },
   "dependencies": {
+    "alea": "0.0.9",
     "bunyan": "^1.4.0",
     "bunyan-format": "^0.2.1",
     "chalk": "^1.1.0",
@@ -30,11 +31,16 @@
     "nconf": "^0.7.1",
     "q": "^1.4.1",
     "q-io": "^1.13.1",
+    "simplex-noise": "^2.2.0",
     "strip-ansi": "^3.0.0",
     "through2": "^2.0.0",
     "traverse": "^0.6.6",
     "turf-area": "^1.1.1",
+    "turf-bbox-polygon": "^1.0.1",
     "turf-centroid": "^1.1.2",
+    "turf-extent": "^1.0.4",
+    "turf-featurecollection": "^1.0.1",
+    "turf-point-grid": "^2.0.0",
     "turf-polygon": "^1.0.3",
     "turf-square-grid": "^1.0.1"
   }
