@@ -18,6 +18,17 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
 
         childLogger.warn('Increasing grid density');
 
+        const polyAreaKm = turfArea(poly) / 1000;
+
+        const unsubdividedPoly = turfFeatureCollection([poly]);
+        if (polyAreaKm < opts.streetGrid.minimumBlockSizeKilometers) {
+            childLogger.warn({
+                polyAreaKm: polyAreaKm,
+                minimumPolyArea: opts.streetGrid.minimumBlockSizeKilometers
+            }, 'This poly will not be subdivided further because it is too small.');
+            return unsubdividedPoly;
+        }
+
         const extent = turfExtent(poly),
             pointsToCheckForNoise = turfPointGrid(
                 extent,
@@ -27,7 +38,6 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
 
         childLogger.warn({pointsCount: pointsToCheckForNoise.features.length}, 'Checking points for noise');
 
-        const unsubdividedPoly = turfFeatureCollection([poly]);
 
         if (!pointsToCheckForNoise.features.length) {
             return unsubdividedPoly;
@@ -43,7 +53,9 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                     return simplexNoiseGenerator.noise2D(coords[0], coords[1]);
                 }) / pointsToCheckForNoise.features.length,
 
-            noiseThreshold = opts.streetGrid.noiseSubdivisionBaseThreshold * subdivisionLevel,
+            noiseThreshold = opts.streetGrid.noiseSubdivisionBaseThreshold
+                * subdivisionLevel
+                * opts.streetGrid.noiseSubdivisionThresholdCoefficient,
             shouldSubdivide = noiseAverage > noiseThreshold;
 
         childLogger.warn({
@@ -69,6 +81,10 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                 .map('feature')
                 .flatten()
                 .value();
+
+        childLogger.warn({
+            subdividedIntoCount: recursivelySubdividedFeatures.length
+        }, 'Subdivided poly into new features');
 
         return turfFeatureCollection(recursivelySubdividedFeatures);
     }

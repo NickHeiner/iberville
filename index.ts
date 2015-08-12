@@ -27,9 +27,11 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             streetGrid: {
                 noiseResolution: {
                     distance: .1,
-                    units: 'miles'
+                    units: 'kilometers'
                 },
-                noiseSubdivisionBaseThreshold: .00001
+                noiseSubdivisionBaseThreshold: .000001,
+                noiseSubdivisionThresholdCoefficient: 100,
+                minimumBlockSizeKilometers: 10,
             },
             seed: 'default-seed'
         }, rawOpts),
