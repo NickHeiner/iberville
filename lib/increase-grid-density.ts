@@ -75,10 +75,9 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             polyRadiusMeters = polySideLengthMeters / 2,
             subdivided = turfSquareGrid(extent, polyRadiusMeters / 1000, 'kilometers'),
             recursivelySubdividedFeatures = _(subdivided.features)
-                .map(function(subdividedPoly: GeoJSON.Feature): GeoJSON.FeatureCollection {
-                    return increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1);
+                .map(function(subdividedPoly: GeoJSON.Feature) {
+                    return increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1).features;
                 })
-                .map('feature')
                 .flatten()
                 .value();
 

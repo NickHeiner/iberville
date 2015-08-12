@@ -8,6 +8,7 @@ const qFs = require('q-io/fs'),
     _ = require('lodash'),
     q = require('q'),
     logger = require('./util/logger'),
+    moment = require('moment'),
     geoJsonHint = require('geojsonhint');
 
 interface IGeoJsonFormatError extends Error {
@@ -18,7 +19,8 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    const opts = _.merge({}, {
+    const startTime = moment(),
+        opts = _.merge({}, {
             centerCoordinates: {
                 lat: 0,
                 long: 0
@@ -31,14 +33,18 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 },
                 noiseSubdivisionBaseThreshold: .000001,
                 noiseSubdivisionThresholdCoefficient: 100,
-                minimumBlockSizeKilometers: 10,
+                minimumBlockSizeKilometers: 100,
             },
             seed: 'default-seed'
         }, rawOpts),
         geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);
 
-    logger.info({geoJson: geoJson}, 'Produced geojson');
+    logger.warn({
+        timeSeconds: moment().diff(startTime, 'seconds', true),
+        countFeatures: geoJson.features.length
+    }, 'Geojson generation complete');
+    logger.debug({geoJson: geoJson}, 'Produced geoJson');
 
     if (errors.length) {
         const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');
