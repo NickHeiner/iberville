@@ -42,6 +42,7 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 noiseThresholdDistanceFromCenterCoefficient: 7,
 
                 minimumBlockSizeKilometers: .1,
+                maxBlockSizeKilometers: 1
             },
             seed: 'default-seed'
         },

@@ -14,6 +14,7 @@ interface IGenerateCityOpts {
         noiseSubdivisionThresholdCoefficient: number;
         noiseThresholdDistanceFromCenterCoefficient: number;
         minimumBlockSizeKilometers: number;
+        maxBlockSizeKilometers: number;
         noiseCoordinatesCoefficient: number;
     };
 }

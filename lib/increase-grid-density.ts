@@ -84,7 +84,7 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                 * opts.streetGrid.noiseSubdivisionThresholdCoefficient,
             shouldSubdivide = noiseAverage > noiseThreshold;
 
-        childLogger.warn({
+        childLogger.debug({
             noiseAverage: noiseAverage,
             noiseThreshold: noiseThreshold,
             distance: distanceFromCenter,
