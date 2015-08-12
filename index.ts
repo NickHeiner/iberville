@@ -25,6 +25,8 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 lat: 0,
                 long: 0
             },
+            // TODO: Make this km so we can easily transpose the city around the world
+            // and not need to tweak this value as well.
             radius: .0015,
             streetGrid: {
                 noiseResolution: {
