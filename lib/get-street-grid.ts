@@ -4,9 +4,16 @@ import increaseGridDensity = require('./increase-grid-density');
 
 const turfBboxPolygon = require('turf-bbox-polygon'),
     turfArea = require('turf-area'),
+    turfFeatureCollection = require('turf-featurecollection'),
     _ = require('lodash');
 
 function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+
+    if (!opts.streetGrid.enable) {
+        logger.warn('Skipping street grid generation because opts.streetGrid.enable = false');
+        return turfFeatureCollection([]);
+    }
+
     const extent = [
             opts.centerCoordinates.lat - opts.radius,
             opts.centerCoordinates.long - opts.radius,

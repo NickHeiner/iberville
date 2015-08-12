@@ -5,7 +5,12 @@ interface IGenerateCityOpts {
     };
     radius: number;
     seed: string;
+    river: {
+        enable: boolean;
+        voronoiPointCount: number;
+    };
     streetGrid: {
+        enable: boolean;
         noiseResolution: {
             distance: number;
             units: string;
