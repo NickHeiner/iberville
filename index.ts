@@ -25,14 +25,19 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 lat: 0,
                 long: 0
             },
-            radius: .0004,
+            radius: .0008,
             streetGrid: {
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'
                 },
-                noiseSubdivisionBaseThreshold: .00001,
-                noiseSubdivisionThresholdCoefficient: 1,
+                noiseCoordinatesCoefficient: 1000,
+
+                // The noise is contained to [0, 1], so the max level of subdivision we can have is given by:
+                //      1 = noiseSubdivisionBaseThreshold * subdivisionLevel * noiseSubdivisionThresholdCoefficient
+                noiseSubdivisionBaseThreshold: .1,
+                noiseSubdivisionThresholdCoefficient: 1.2,
+
                 minimumBlockSizeKilometers: .1,
             },
             seed: 'default-seed'
