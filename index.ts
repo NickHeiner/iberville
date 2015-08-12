@@ -1,6 +1,6 @@
 /// <reference path='./typings/tsd.d.ts' />
 
-import getStreetGrid = require('./lib/get-street-grid');
+import createCity = require('./lib/create-city');
 
 import './types';
 
@@ -18,7 +18,7 @@ interface IGeoJsonFormatError extends Error {
     }];
 }
 
-function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
+function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     const startTime = moment(),
         defaults: IGenerateCityOpts = {
             centerCoordinates: {
@@ -47,7 +47,7 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             seed: 'default-seed'
         },
         opts = _.merge({}, defaults, rawOpts),
-        geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
+        geoJson = createCity(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);
 
     logger.warn({
@@ -69,5 +69,4 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     return qFs.write(opts.outFileName, JSON.stringify(geoJson, null, 2));
 }
 
-module.exports = createCity;
-export = createCity;
+module.exports = iberville;

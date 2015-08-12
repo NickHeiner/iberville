@@ -21,7 +21,7 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                 const areaMeters = turfArea(feature),
                     isBlockTooBig = areaMeters > maxBlockSizeMeters;
 
-                logger.warn({
+                logger.debug({
                     blockAreaMeters: areaMeters,
                     maxBlockSizeMeters: maxBlockSizeMeters,
                     isBlockTooBig: isBlockTooBig

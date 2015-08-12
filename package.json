@@ -45,6 +45,7 @@
     "turf-point": "^2.0.1",
     "turf-point-grid": "^2.0.0",
     "turf-polygon": "^1.0.3",
-    "turf-square-grid": "^1.0.1"
+    "turf-square-grid": "^1.0.1",
+    "voronoi": "^1.0.0"
   }
 }
