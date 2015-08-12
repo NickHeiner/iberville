@@ -5,9 +5,12 @@ const _ = require('lodash'),
     simplexNoise = require('simplex-noise'),
     turfExtent = require('turf-extent'),
     turfPointGrid = require('turf-point-grid'),
+    turfPoint = require('turf-point'),
     turfSquareGrid = require('turf-square-grid'),
     turfArea = require('turf-area'),
-    turfFeatureCollection = require('turf-featurecollection');
+    turfFeatureCollection = require('turf-featurecollection'),
+    turfDistance = require('turf-distance'),
+    turfCentroid = require('turf-centroid');
 
 function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
@@ -25,7 +28,7 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             // properties has to just be string/string key value pairs if it is to show up nicely in geojson.io.
             unsubdividedPoly.features[0].properties.generationDebugging_polyAreaKm = polyAreaKm;
             unsubdividedPoly.features[0].properties.generationDebugging_reasonStopped = 'area below minimum block size';
-            childLogger.warn({
+            childLogger.debug({
                 polyAreaKm: polyAreaKm,
                 minimumPolyArea: opts.streetGrid.minimumBlockSizeKilometers
             }, 'This poly will not be subdivided further because it is too small.');
@@ -39,7 +42,7 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                 opts.streetGrid.noiseResolution.units
             );
 
-        childLogger.warn({pointsCount: pointsToCheckForNoise.features.length}, 'Checking points for noise');
+        childLogger.debug({pointsCount: pointsToCheckForNoise.features.length}, 'Checking points for noise');
 
         if (!pointsToCheckForNoise.features.length) {
             unsubdividedPoly.features[0].properties
@@ -59,12 +62,24 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                         coords[1] * opts.streetGrid.noiseCoordinatesCoefficient
                     ),
                         // The noise values are in the range [-1, 1], and we want to normalize that to [0, 1].
+                        // Are those bounds inclusive or exclusive? I'm actually not sure.
                         normalizedNoiseValue = (noiseValue + 1) / 2;
 
                     return normalizedNoiseValue;
                 }) / pointsToCheckForNoise.features.length,
 
+            polyCentroidPoint = turfCentroid(unsubdividedPoly),
+            distanceFromCenter = turfDistance(
+                polyCentroidPoint,
+                turfPoint([opts.centerCoordinates.long, opts.centerCoordinates.lat])
+            ),
+
+            // This has the (nice?) property that distance will be 0 for the first poly, so we will always
+            // subdivide the first time, because the threshold will be 0, which is less than any noise value.
+            distanceCoefficient = opts.streetGrid.noiseThresholdDistanceFromCenterCoefficient * distanceFromCenter,
+
             noiseThreshold = opts.streetGrid.noiseSubdivisionBaseThreshold
+                * distanceCoefficient
                 * subdivisionLevel
                 * opts.streetGrid.noiseSubdivisionThresholdCoefficient,
             shouldSubdivide = noiseAverage > noiseThreshold;
@@ -72,6 +87,9 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
         childLogger.warn({
             noiseAverage: noiseAverage,
             noiseThreshold: noiseThreshold,
+            distance: distanceFromCenter,
+            distanceCoefficient: distanceCoefficient,
+            noiseSubdivisionThresholdCoefficient: opts.streetGrid.noiseSubdivisionThresholdCoefficient,
             subdivisionLevel: subdivisionLevel,
             shouldSubdivide: shouldSubdivide
         }, 'Determined noise average');
@@ -95,7 +113,7 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
                 .flatten()
                 .value();
 
-        childLogger.warn({
+        childLogger.debug({
             subdividedIntoCount: recursivelySubdividedFeatures.length
         }, 'Subdivided poly into new features');
 

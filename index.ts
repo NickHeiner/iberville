@@ -20,12 +20,12 @@ interface IGeoJsonFormatError extends Error {
 
 function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     const startTime = moment(),
-        opts = _.merge({}, {
+        defaults: IGenerateCityOpts = {
             centerCoordinates: {
                 lat: 0,
                 long: 0
             },
-            radius: .0008,
+            radius: .0015,
             streetGrid: {
                 noiseResolution: {
                     distance: .1,
@@ -37,11 +37,13 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 //      1 = noiseSubdivisionBaseThreshold * subdivisionLevel * noiseSubdivisionThresholdCoefficient
                 noiseSubdivisionBaseThreshold: .1,
                 noiseSubdivisionThresholdCoefficient: 1.2,
+                noiseThresholdDistanceFromCenterCoefficient: 7,
 
                 minimumBlockSizeKilometers: .1,
             },
             seed: 'default-seed'
-        }, rawOpts),
+        },
+        opts = _.merge({}, defaults, rawOpts),
         geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);
 

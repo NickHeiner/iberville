@@ -15,7 +15,7 @@ const streams = [{
 }];
 
 export = bunyan.createLogger({
-    name: 'lsc',
+    name: 'iberville',
     serializers: bunyan.stdSerializers,
     src: false,
     streams: streams
