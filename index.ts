@@ -25,15 +25,15 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 lat: 0,
                 long: 0
             },
-            radius: .04,
+            radius: .0004,
             streetGrid: {
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'
                 },
-                noiseSubdivisionBaseThreshold: .000001,
-                noiseSubdivisionThresholdCoefficient: 100,
-                minimumBlockSizeKilometers: 100,
+                noiseSubdivisionBaseThreshold: .00001,
+                noiseSubdivisionThresholdCoefficient: 1,
+                minimumBlockSizeKilometers: .1,
             },
             seed: 'default-seed'
         }, rawOpts),
