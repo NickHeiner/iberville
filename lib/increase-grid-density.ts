@@ -54,7 +54,7 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             _(pointsToCheckForNoise.features)
                 .map('geometry')
                 .map('coordinates')
-                .sum(function(coords: number[]) {
+                .sum((coords: number[]) => {
                     // The coords may all be very close together. It may be necessary to multiply by a scaling factor
                     // to see much of a difference.
                     const noiseValue = simplexNoiseGenerator.noise2D(
@@ -107,9 +107,10 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             polyRadiusMeters = polySideLengthMeters / 2,
             subdivided = turfSquareGrid(extent, polyRadiusMeters / 1000, 'kilometers'),
             recursivelySubdividedFeatures = _(subdivided.features)
-                .map(function(subdividedPoly: GeoJSON.Feature) {
-                    return increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1).features;
-                })
+                .map(
+                    (subdividedPoly: GeoJSON.Feature) =>
+                        increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1).features
+                )
                 .flatten()
                 .value();
 

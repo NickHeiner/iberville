@@ -7,7 +7,7 @@ const through2 = require('through2'),
     _ = require('lodash');
 
 function createStdoutStream(out: NodeJS.WritableStream, logFormat: string) {
-    const tapSafeLogOutput = through2(function(chunk: Buffer, enc: string, callback: Function) {
+    const tapSafeLogOutput = through2((chunk: Buffer, enc: string, callback: Function) => {
             // All log records always end in a newline, so we want to strip
             // it off pre-prefixing and add it back afterwards.
             const lines = stripAnsi(chunk.toString()).trim().split('\n'),

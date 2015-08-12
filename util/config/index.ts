@@ -21,9 +21,7 @@ function createConfig(rawArgv: string[]) {
         parsedArgv = flat.unflatten(minimist(rawArgv), {delimiter: ':'}),
         envWhitelist = _(process.env)
             .keys()
-            .filter(function(key: string) {
-                return ENV_DELIMITER_REGEX.test(key) && !/^npm_config/.test(key);
-            })
+            .filter((key: string) => ENV_DELIMITER_REGEX.test(key) && !/^npm_config/.test(key))
             .valueOf()
             .concat(['loglevel']);
 
