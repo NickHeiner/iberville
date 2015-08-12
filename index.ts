@@ -8,6 +8,7 @@ const qFs = require('q-io/fs'),
     _ = require('lodash'),
     q = require('q'),
     logger = require('./util/logger'),
+    moment = require('moment'),
     geoJsonHint = require('geojsonhint');
 
 interface IGeoJsonFormatError extends Error {
@@ -18,21 +19,39 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    const opts = _.merge({}, {
+    const startTime = moment(),
+        defaults: IGenerateCityOpts = {
             centerCoordinates: {
                 lat: 0,
                 long: 0
             },
-            radius: .04,
-            blockSize: {
-                distance: .8,
-                units: 'miles'
-            }
-        }, rawOpts),
+            radius: .0015,
+            streetGrid: {
+                noiseResolution: {
+                    distance: .1,
+                    units: 'kilometers'
+                },
+                noiseCoordinatesCoefficient: 1000,
+
+                // The noise is contained to [0, 1], so the max level of subdivision we can have is given by:
+                //      1 = noiseSubdivisionBaseThreshold * subdivisionLevel * noiseSubdivisionThresholdCoefficient
+                noiseSubdivisionBaseThreshold: .1,
+                noiseSubdivisionThresholdCoefficient: 1.2,
+                noiseThresholdDistanceFromCenterCoefficient: 7,
+
+                minimumBlockSizeKilometers: .1,
+            },
+            seed: 'default-seed'
+        },
+        opts = _.merge({}, defaults, rawOpts),
         geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson);
 
-    logger.info({geoJson: geoJson}, 'Produced geojson');
+    logger.warn({
+        timeSeconds: moment().diff(startTime, 'seconds', true),
+        countFeatures: geoJson.features.length
+    }, 'Geojson generation complete');
+    logger.debug({geoJson: geoJson}, 'Produced geoJson');
 
     if (errors.length) {
         const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');

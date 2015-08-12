@@ -1,16 +1,17 @@
 import '../types';
+import increaseGridDensity = require('./increase-grid-density');
 
-const turfSquareGrid = require('turf-square-grid');
+const turfBboxPolygon = require('turf-bbox-polygon');
 
-function getStreetGrid(opts: IGenerateCityOpts) {
+function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
     const extent = [
-        opts.centerCoordinates.lat - opts.radius,
-        opts.centerCoordinates.long - opts.radius,
-        opts.centerCoordinates.lat + opts.radius,
-        opts.centerCoordinates.long + opts.radius,
-    ];
+            opts.centerCoordinates.lat - opts.radius,
+            opts.centerCoordinates.long - opts.radius,
+            opts.centerCoordinates.lat + opts.radius,
+            opts.centerCoordinates.long + opts.radius,
+        ];
 
-    return turfSquareGrid(extent, opts.blockSize.distance, opts.blockSize.units);
+    return increaseGridDensity(turfBboxPolygon(extent), opts);
 }
 
 export = getStreetGrid;
