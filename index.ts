@@ -9,6 +9,7 @@ const qFs = require('q-io/fs'),
     q = require('q'),
     logger = require('./util/logger'),
     moment = require('moment'),
+    md5 = require('md5'),
     geoJsonHint = require('geojsonhint');
 
 interface IGeoJsonFormatError extends Error {
@@ -48,12 +49,18 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         },
         opts = _.merge({}, defaults, rawOpts),
         geoJson = createCity(_.omit(opts, 'outFileName')),
-        errors = geoJsonHint.hint(geoJson);
+        errors = geoJsonHint.hint(geoJson),
+        geoJsonHash = md5(JSON.stringify(geoJson));
 
     logger.warn({
         timeSeconds: moment().diff(startTime, 'seconds', true),
-        countFeatures: geoJson.features.length
+        countFeatures: geoJson.features.length,
+
+        // This makes it easier to see if anything has changed. Without this, you have to copy/paste the output
+        // and manually inspect in a geojson viewer.
+        md5Checksum: geoJsonHash
     }, 'Geojson generation complete');
+
     logger.debug({geoJson: geoJson}, 'Produced geoJson');
 
     if (errors.length) {
