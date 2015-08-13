@@ -8,7 +8,7 @@
     "create-city": "./bin/create-city.js"
   },
   "scripts": {
-    "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts && tsc -p .",
+    "pretest": "tsc -p .",
     "test": "npm run start",
     "prepublish": "tsd reinstall",
     "start": "./bin/create-city.js --out generated.geojson"

@@ -55,21 +55,31 @@ function generateVoronoi(opts: IGenerateCityOpts) {
         voronoiPoints = _.map(sites, (coord: IVoronoiVertex) => turfPoint([coord.x, coord.y]));
     }
 
-    logger.debug({sites: sites, bbox: bbox}, 'Preparing to generate voronoi diagram');
+    logger.debug({sites, bbox}, 'Preparing to generate voronoi diagram');
 
     const voronoi = new Voronoi(),
         voronoiDiagram = voronoi.compute(sites, bbox);
 
-    logger.warn({
+    logger.debug({
         voronoiDiagramEdgesCount: voronoiDiagram.edges.length,
         voronoiDiagram: voronoiDiagram.edges
     }, 'Generated voronoi diagram');
 
-    const lines = _(voronoiDiagram.edges)
-        .filter('lSite')
-        .filter('rSite')
-        .map((edge: IVoronoiEdge) => turfLineString([[edge.va.x, edge.va.y], [edge.vb.x, edge.vb.y]], {river: true}))
-        .value();
+    const [internalLines, linesOnPerimeter] =
+            _.partition(voronoiDiagram.edges, (edge: IVoronoiEdge) => edge.lSite && edge.rSite),
+        lines = _.map(internalLines, (edge: IVoronoiEdge) => {
+            const firstCoordTouchesPerimeter = _.some(linesOnPerimeter, (line: IVoronoiEdge) =>
+                    line.va.x === edge.va.x || line.va.y === edge.va.y
+                ),
+                secondCoordTouchesPerimeter =  _.some(linesOnPerimeter, (line: IVoronoiEdge) =>
+                    line.vb.x === edge.vb.x || line.vb.y === edge.vb.y
+                );
+
+            return turfLineString(
+                [[edge.va.x, edge.va.y], [edge.vb.x, edge.vb.y]],
+                {river: true, firstCoordTouchesPerimeter, secondCoordTouchesPerimeter}
+            );
+        });
 
     return turfFeatureCollection(voronoiPoints.concat(lines));
 }

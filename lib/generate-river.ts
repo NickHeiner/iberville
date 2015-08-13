@@ -3,6 +3,7 @@ import logger = require('../util/logger/index');
 import generateVoronoi = require('./generate-voronoi');
 
 const turfExtent = require('turf-extent'),
+    turfPoint = require('turf-point'),
     turfFeatureCollection = require('turf-featurecollection'),
     _ = require('lodash');
 
@@ -18,13 +19,13 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             return [];
         }
 
-         const startingPoint = _(potentialRiverEdges)
-            .filter((feature: GeoJSON.Feature) => {
-                 const wIsOnEdge = _.contains([extent[0], extent[2]], feature.geometry.coordinates[0][0])
-             }
-    }
+        const potentialStartLines = _.filter(
+            potentialRiverEdges.features,
+            (feature: GeoJSON.Feature) => feature.properties.firstCoordTouchesPerimeter
+        );
 
-    logger.warn({extent: extent});
+        return _.map(potentialStartLines, (line: GeoJSON.Feature) => turfPoint(line.geometry.coordinates[0]));
+    }
 
     return turfFeatureCollection(generateRiverRec(potentialRiverEdges, opts.river.count));
 }
