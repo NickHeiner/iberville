@@ -8,6 +8,9 @@ interface IGenerateCityOpts {
     river: {
         enable: boolean;
         voronoiPointCount: number;
+        debug: {
+            includeVoronoiPointsInOutput: boolean;
+        }
     };
     streetGrid: {
         enable: boolean;

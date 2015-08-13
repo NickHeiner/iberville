@@ -5,6 +5,7 @@ const Voronoi = require('voronoi'),
     _ = require('lodash'),
     Alea = require('alea'),
     turfFeatureCollection = require('turf-featurecollection'),
+    turfPoint = require('turf-point'),
     turfLineString = require('turf-linestring');
 
 interface IVoronoiVertex {
@@ -47,6 +48,11 @@ function generateRiver(opts: IGenerateCityOpts) {
             })
             .value();
 
+    let voronoiPoints: GeoJSON.Feature[] = [];
+    if (opts.river.debug.includeVoronoiPointsInOutput) {
+        voronoiPoints = _.map(sites, (coord: IVoronoiVertex) => turfPoint([coord.x, coord.y]));
+    }
+
     logger.debug({sites: sites, bbox: bbox}, 'Preparing to generate voronoi diagram');
 
     const voronoi = new Voronoi(),
@@ -62,7 +68,7 @@ function generateRiver(opts: IGenerateCityOpts) {
             (edge: IVoronoiEdge) => turfLineString([[edge.va.x, edge.va.y], [edge.vb.x, edge.vb.y]], {river: true})
         );
 
-    return turfFeatureCollection(lines);
+    return turfFeatureCollection(voronoiPoints.concat(lines));
 }
 
 export = generateRiver;
