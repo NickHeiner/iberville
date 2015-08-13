@@ -19,5 +19,6 @@ Run `npm start` and copy the output of into http://geojson.io/ to see what was r
 
 ### Lessons learned
 * Log everything
+* Iterative development is your friend
 * Make everything a param that can be tweaked. Really interesting algorithms can easily be torpedoed by crappy params.
 * For once, I actually need to slow down and think about what I'm typing.

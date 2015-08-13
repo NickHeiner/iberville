@@ -32,6 +32,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             river: {
                 enable: true,
                 voronoiPointCount: 300,
+                count: 1,
                 debug: {
                     includeVoronoiPointsInOutput: false
                 }

@@ -7,6 +7,8 @@ interface IGenerateCityOpts {
     seed: string;
     river: {
         enable: boolean;
+        count: number;
+        // TODO add forking factor?
         voronoiPointCount: number;
         debug: {
             includeVoronoiPointsInOutput: boolean;
