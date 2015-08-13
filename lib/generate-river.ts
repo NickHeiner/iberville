@@ -42,8 +42,8 @@ function generateRiver(opts: IGenerateCityOpts) {
                     yRandom = pRNG();
 
                 return {
-                    x: bbox.xr + bboxXLen * xRandom,
-                    y: bbox.yb + bboxYLen * yRandom
+                    x: bbox.xl + bboxXLen * xRandom,
+                    y: bbox.yt + bboxYLen * yRandom
                 };
             })
             .value();
