@@ -2,14 +2,12 @@ import '../types';
 import logger = require('../util/logger/index');
 import generateVoronoi = require('./generate-voronoi');
 
-const turfExtent = require('turf-extent'),
-    turfPoint = require('turf-point'),
+const turfPoint = require('turf-point'),
     turfFeatureCollection = require('turf-featurecollection'),
     _ = require('lodash');
 
 function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
-    const potentialRiverEdges = generateVoronoi(opts),
-        extent = turfExtent(potentialRiverEdges);
+    const potentialRiverEdges = generateVoronoi(opts);
 
     function generateRiverRec(
         potentialRiverEdges: GeoJSON.FeatureCollection,
@@ -19,10 +17,13 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             return [];
         }
 
+        // TODO this only selects a subset of the actual starting points, but I'm ok with that for now.
         const potentialStartLines = _.filter(
             potentialRiverEdges.features,
             (feature: GeoJSON.Feature) => feature.properties.firstCoordTouchesPerimeter
         );
+
+        logger.trace({potentialStartLines}, 'Found potential start lines');
 
         return _.map(potentialStartLines, (line: GeoJSON.Feature) => turfPoint(line.geometry.coordinates[0]));
     }
