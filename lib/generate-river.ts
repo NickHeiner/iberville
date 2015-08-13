@@ -2,7 +2,8 @@ import '../types';
 import generateVoronoi = require('./generate-voronoi');
 
 function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
-    return generateVoronoi(opts);
+    const potentialRiverEdges = generateVoronoi(opts);
+    return potentialRiverEdges;
 }
 
 export = generateRiver;

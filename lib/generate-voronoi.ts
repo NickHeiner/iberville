@@ -14,6 +14,8 @@ interface IVoronoiVertex {
 }
 
 interface IVoronoiEdge {
+    lSite?: IVoronoiVertex;
+    rSite?: IVoronoiVertex;
     va: IVoronoiVertex;
     vb: IVoronoiVertex;
 }
@@ -21,7 +23,7 @@ interface IVoronoiEdge {
 function generateVoronoi(opts: IGenerateCityOpts) {
 
     if (!opts.river.enable) {
-        logger.warn('Skipping river generation because opts.river.enable = false');
+        logger.debug('Skipping river generation because opts.river.enable = false');
         return turfFeatureCollection([]);
     }
 
@@ -63,10 +65,11 @@ function generateVoronoi(opts: IGenerateCityOpts) {
         voronoiDiagram: voronoiDiagram.edges
     }, 'Generated voronoi diagram');
 
-    const lines = _.map(
-            voronoiDiagram.edges,
-            (edge: IVoronoiEdge) => turfLineString([[edge.va.x, edge.va.y], [edge.vb.x, edge.vb.y]], {river: true})
-        );
+    const lines = _(voronoiDiagram.edges)
+        .filter('lSite')
+        .filter('rSite')
+        .map((edge: IVoronoiEdge) => turfLineString([[edge.va.x, edge.va.y], [edge.vb.x, edge.vb.y]], {river: true}))
+        .value();
 
     return turfFeatureCollection(voronoiPoints.concat(lines));
 }
