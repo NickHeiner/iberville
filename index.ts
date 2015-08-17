@@ -32,15 +32,15 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             radius: .0015,
             river: {
                 enable: true,
-                voronoiPointCount: 3,
+                voronoiPointCount: 300,
                 debug: {
-                    includeVoronoiPointsInOutput: true,
-                    includeVoronoiLinesInOutput: true
+                    includeVoronoiPointsInOutput: false,
+                    includeVoronoiLinesInOutput: false
                 }
             },
             generateOsm: false,
             streetGrid: {
-                enable: false,
+                enable: true,
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'
