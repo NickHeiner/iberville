@@ -58,6 +58,7 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     logger.debug({chosenStartPoint}, 'Found potential start lines');
 
+    // TODO use turf-bezier to smooth out the line?
     const riverLines = generateRiverRec(chosenStartPoint, allRiverEdges.features);
 
     logger.debug({riverLines}, 'Generated river');
