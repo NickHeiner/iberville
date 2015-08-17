@@ -1,3 +1,5 @@
+import logger = require('../util/logger/index');
+
 const turfFeatureCollection = require('turf-featurecollection'),
     turfIntersect = require('turf-intersect'),
     _ = require('lodash');
@@ -6,10 +8,12 @@ function removeIntersectingElements(elements: GeoJSON.FeatureCollection[]): GeoJ
 
     const features = _(elements)
         .map((featureCollection: GeoJSON.FeatureCollection, index: number, elements: GeoJSON.FeatureCollection[]) => {
-            const higherPriorityFeatures = _(elements.slice(index))
+            const higherPriorityFeatures = _(elements.slice(index + 1))
                 .map('features')
                 .flatten()
                 .value();
+
+            logger.trace({lenHigherPriorityFeatures: higherPriorityFeatures.length}, 'Found higher priority features');
 
             return _.reject(
                 featureCollection.features,
