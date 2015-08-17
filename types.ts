@@ -7,11 +7,11 @@ interface IGenerateCityOpts {
     seed: string;
     river: {
         enable: boolean;
-        count: number;
-        // TODO add forking factor?
+        // TODO add forking factor and count?
         voronoiPointCount: number;
         debug: {
             includeVoronoiPointsInOutput: boolean;
+            includeVoronoiLinesInOutput: boolean;
         }
     };
     generateOsm: boolean;

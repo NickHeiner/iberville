@@ -7,37 +7,54 @@ const turfFeatureCollection = require('turf-featurecollection'),
     _ = require('lodash');
 
 function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
-    const potentialRiverEdges = generateVoronoi(opts),
+    // TODO consider factoring creation of pRNG out so it is consistent.
+    const pRNG = new Alea(opts.seed);
 
-        // TODO consider factoring creation of pRNG out so it is consistent.
-        pRNG = new Alea(opts.seed);
+    function sampleFromList<T>(list: T[]): {element: T; rest: T[]} {
+        const randomIndex = Math.floor(pRNG() * list.length),
+            listClone = _.cloneDeep(list),
+            sampledElement = _.pullAt(listClone, randomIndex)[0];
 
-    function generateRiverRec(
-        startPoint: number[],
-        potentialRiverEdges: GeoJSON.FeatureCollection,
-        countToGenerate: number
-    ): GeoJSON.Feature[] {
-        if (countToGenerate === 0) {
-            return [];
-        }
-        return [require('turf-point')(startPoint)];
+        return {element: sampledElement, rest: listClone};
     }
 
-    // TODO this only selects a subset of the actual starting points, but I'm ok with that for now.
-    const potentialStartLines = _.filter(
-            potentialRiverEdges.features,
+    function generateRiverRec(
+        currLine: GeoJSON.Feature,
+        potentialRiverEdges: GeoJSON.Feature[]
+    ): GeoJSON.Feature[] {
+        const potentialNextLines: GeoJSON.Feature[] = _.filter(
+            potentialRiverEdges,
+            (feature: GeoJSON.Feature) => _.isEqual(feature.geometry.coordinates[0], currLine.geometry.coordinates[1])
+        );
+
+        logger.warn({potentialNextLinesCount: potentialNextLines.length}, 'Found potential river continuations');
+
+        if (!potentialNextLines.length) {
+            return [];
+        }
+
+        const {element, rest} = sampleFromList(potentialNextLines);
+
+        return [element].concat(generateRiverRec(element, rest));
+    }
+
+    const {points, lines} = generateVoronoi(opts),
+
+        // TODO this only selects a subset of the actual starting points, but I'm ok with that for now.
+        potentialStartLines: GeoJSON.Feature[] = _.filter(
+            lines.features,
             (feature: GeoJSON.Feature) => feature.properties.firstCoordTouchesPerimeter
         ),
-        randomIndex = pRNG() * potentialStartLines.length,
-        startLine = potentialStartLines[Math.floor(randomIndex)];
 
-    logger.warn({startLine: startLine, randomIndex: randomIndex}, 'Chose random start line');
+        {element, rest} = sampleFromList(potentialStartLines);
 
-    const chosenStartPoint = startLine.geometry.coordinates[0];
+    logger.warn({chosenStartPoint: element}, 'Found potential start lines');
 
-    logger.warn({chosenStartPoint}, 'Found potential start lines');
-
-    return turfFeatureCollection(generateRiverRec(chosenStartPoint, potentialRiverEdges, opts.river.count));
+    return turfFeatureCollection(
+        generateRiverRec(element, rest)
+            .concat(points.features)
+            .concat(opts.river.debug.includeVoronoiLinesInOutput ? lines.features : [])
+    );
 }
 
 export = generateRiver;

@@ -20,7 +20,8 @@ interface IVoronoiEdge {
     vb: IVoronoiVertex;
 }
 
-function generateVoronoi(opts: IGenerateCityOpts) {
+function generateVoronoi(opts: IGenerateCityOpts):
+        {lines: GeoJSON.FeatureCollection; points: GeoJSON.FeatureCollection} {
 
     if (!opts.river.enable) {
         logger.debug('Skipping river generation because opts.river.enable = false');
@@ -81,7 +82,7 @@ function generateVoronoi(opts: IGenerateCityOpts) {
             );
         });
 
-    return turfFeatureCollection(voronoiPoints.concat(lines));
+    return {lines: turfFeatureCollection(lines), points: turfFeatureCollection(voronoiPoints)};
 }
 
 export = generateVoronoi;
