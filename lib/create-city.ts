@@ -3,12 +3,13 @@
 import getStreetGrid = require('./get-street-grid');
 import generateRiver = require('./generate-river');
 import removeIntersectingElements = require('./remove-intersecting-elements');
+import logStep = require('../util/logger/log-step');
 
 function createCity(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
-    const streetGrid = getStreetGrid(opts),
-        river = generateRiver(opts);
+    const streetGrid = logStep({step: 'generating street grid'}, () => getStreetGrid(opts)),
+        river = logStep({step: 'generating river'}, () => generateRiver(opts));
 
-    return removeIntersectingElements([streetGrid, river]);
+    return logStep({step: 'removing intersecting elements'}, () => removeIntersectingElements([streetGrid, river]));
 }
 
 export = createCity;

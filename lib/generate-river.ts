@@ -4,6 +4,7 @@ import generateVoronoi = require('./generate-voronoi');
 
 const turfFeatureCollection = require('turf-featurecollection'),
     turfLineString = require('turf-linestring'),
+    turfBezier = require('turf-bezier'),
     Alea = require('alea'),
     _ = require('lodash');
 
@@ -59,7 +60,6 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     logger.debug({chosenStartPoint}, 'Found potential start lines');
 
-    // TODO use turf-bezier to smooth out the line?
     const riverLines = generateRiverRec(chosenStartPoint, allRiverEdges.features),
         riverLineString = turfLineString(
             _(riverLines)
@@ -67,12 +67,13 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                 .uniq()
                 .flatten()
                 .value()
-        );
+        ),
+        smoothedRiverLine = turfBezier(riverLineString, 20000, .8);
 
-    logger.debug({riverLineString}, 'Generated river');
+    logger.debug({smoothedRiverLine}, 'Generated river');
 
     return turfFeatureCollection(
-        [riverLineString]
+        [smoothedRiverLine]
             .concat(debugPoints.features)
             .concat(opts.river.debug.includeVoronoiLinesInOutput ? allRiverEdges.features : [])
     );
