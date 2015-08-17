@@ -1,14 +1,16 @@
 /// <reference path='./typings/tsd.d.ts' />
 
-import getStreetGrid = require('./lib/get-street-grid');
+import createCity = require('./lib/create-city');
 
 import './types';
 
 const qFs = require('q-io/fs'),
+    osmAndGeojson = require('osm-and-geojson'),
     _ = require('lodash'),
     q = require('q'),
     logger = require('./util/logger'),
     moment = require('moment'),
+    md5 = require('md5'),
     geoJsonHint = require('geojsonhint');
 
 interface IGeoJsonFormatError extends Error {
@@ -18,7 +20,7 @@ interface IGeoJsonFormatError extends Error {
     }];
 }
 
-function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
+function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     const startTime = moment(),
         defaults: IGenerateCityOpts = {
             centerCoordinates: {
@@ -28,7 +30,17 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             // TODO: Make this km so we can easily transpose the city around the world
             // and not need to tweak this value as well.
             radius: .0015,
+            river: {
+                enable: true,
+                voronoiPointCount: 300,
+                debug: {
+                    includeVoronoiPointsInOutput: false,
+                    includeVoronoiLinesInOutput: false
+                }
+            },
+            generateOsm: false,
             streetGrid: {
+                enable: true,
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'
@@ -47,13 +59,19 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             seed: 'default-seed'
         },
         opts = _.merge({}, defaults, rawOpts),
-        geoJson = getStreetGrid(_.omit(opts, 'outFileName')),
-        errors = geoJsonHint.hint(geoJson);
+        geoJson = createCity(_.omit(opts, 'outFileName')),
+        errors = geoJsonHint.hint(geoJson),
+        geoJsonHash = md5(JSON.stringify(geoJson));
 
     logger.warn({
         timeSeconds: moment().diff(startTime, 'seconds', true),
-        countFeatures: geoJson.features.length
+        countFeatures: geoJson.features.length,
+
+        // This makes it easier to see if anything has changed. Without this, you have to copy/paste the output
+        // and manually inspect in a geojson viewer.
+        md5Checksum: geoJsonHash
     }, 'Geojson generation complete');
+
     logger.debug({geoJson: geoJson}, 'Produced geoJson');
 
     if (errors.length) {
@@ -64,10 +82,17 @@ function createCity(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         return deferred.promise;
     }
 
-    logger.info({outFile: opts.outFileName}, 'Writing geojson');
+    const fileWrites: Q.IPromise<void>[] = [];
 
-    return qFs.write(opts.outFileName, JSON.stringify(geoJson, null, 2));
+    logger.info({outFile: opts.outFileName}, 'Writing geojson');
+    fileWrites.push(qFs.write(opts.outFileName + '.geojson', JSON.stringify(geoJson, null, 2)));
+
+    if (opts.generateOsm) {
+        logger.info({outFile: opts.outFileName}, 'Writing osm');
+        fileWrites.push(qFs.write(opts.outFileName + '.osm', osmAndGeojson.geojson2osm(geoJson)));
+    }
+
+    return q.all(fileWrites);
 }
 
-module.exports = createCity;
-export = createCity;
+module.exports = iberville;

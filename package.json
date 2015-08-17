@@ -5,13 +5,13 @@
   "repository": "https://github.com/NickHeiner/iberville",
   "author": "Nick Heiner <nth23@cornell.edu>",
   "bin": {
-    "create-city": "./bin/create-city.js"
+    "create-city": "./bin/iberville.js"
   },
   "scripts": {
     "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts && tsc -p .",
     "test": "npm run start",
     "prepublish": "tsd reinstall",
-    "start": "./bin/create-city.js --out generated.geojson"
+    "start": "./bin/iberville.js --out generated"
   },
   "license": "MIT",
   "devDependencies": {
@@ -27,9 +27,11 @@
     "flat": "^1.6.0",
     "geojsonhint": "^1.1.0",
     "lodash": "^3.10.0",
+    "md5": "^2.0.0",
     "minimist": "^1.1.2",
     "moment": "^2.10.6",
     "nconf": "^0.7.1",
+    "osm-and-geojson": "^0.1.2",
     "q": "^1.4.1",
     "q-io": "^1.13.1",
     "simplex-noise": "^2.2.0",
@@ -40,11 +42,15 @@
     "turf-bbox-polygon": "^1.0.1",
     "turf-centroid": "^1.1.2",
     "turf-distance": "^1.0.1",
+    "turf-envelope": "^1.0.2",
     "turf-extent": "^1.0.4",
     "turf-featurecollection": "^1.0.1",
+    "turf-intersect": "^1.4.2",
+    "turf-linestring": "^1.0.2",
     "turf-point": "^2.0.1",
     "turf-point-grid": "^2.0.0",
     "turf-polygon": "^1.0.3",
-    "turf-square-grid": "^1.0.1"
+    "turf-square-grid": "^1.0.1",
+    "voronoi": "^1.0.0"
   }
 }

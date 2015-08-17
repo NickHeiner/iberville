@@ -5,7 +5,18 @@ interface IGenerateCityOpts {
     };
     radius: number;
     seed: string;
+    river: {
+        enable: boolean;
+        // TODO add forking factor and count?
+        voronoiPointCount: number;
+        debug: {
+            includeVoronoiPointsInOutput: boolean;
+            includeVoronoiLinesInOutput: boolean;
+        }
+    };
+    generateOsm: boolean;
     streetGrid: {
+        enable: boolean;
         noiseResolution: {
             distance: number;
             units: string;

@@ -8,7 +8,6 @@ I developed this on node `v0.12.7`.
 Run `npm start` and copy the output of into http://geojson.io/ to see what was rendered.
 
 ### TODO / Ideas
-* Remove outermost edges to avoid an artificial grid look
 * Add
     * Parks
     * Rivers
@@ -20,4 +19,6 @@ Run `npm start` and copy the output of into http://geojson.io/ to see what was r
 
 ### Lessons learned
 * Log everything
+* Iterative development is your friend
 * Make everything a param that can be tweaked. Really interesting algorithms can easily be torpedoed by crappy params.
+* For once, I actually need to slow down and think about what I'm typing.
