@@ -11,7 +11,7 @@
     "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts && tsc -p .",
     "test": "npm run start",
     "prepublish": "tsd reinstall",
-    "start": "./bin/create-city.js --out generated.geojson"
+    "start": "./bin/create-city.js --out generated"
   },
   "license": "MIT",
   "devDependencies": {
@@ -31,6 +31,7 @@
     "minimist": "^1.1.2",
     "moment": "^2.10.6",
     "nconf": "^0.7.1",
+    "osm-and-geojson": "^0.1.2",
     "q": "^1.4.1",
     "q-io": "^1.13.1",
     "simplex-noise": "^2.2.0",

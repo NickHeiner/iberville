@@ -5,6 +5,7 @@ import createCity = require('./lib/create-city');
 import './types';
 
 const qFs = require('q-io/fs'),
+    osmAndGeojson = require('osm-and-geojson'),
     _ = require('lodash'),
     q = require('q'),
     logger = require('./util/logger'),
@@ -30,13 +31,14 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             // and not need to tweak this value as well.
             radius: .0015,
             river: {
-                enable: true,
+                enable: false,
                 voronoiPointCount: 300,
                 count: 1,
                 debug: {
                     includeVoronoiPointsInOutput: false
                 }
             },
+            generateOsm: true,
             streetGrid: {
                 enable: true,
                 noiseResolution: {
@@ -80,9 +82,17 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         return deferred.promise;
     }
 
-    logger.info({outFile: opts.outFileName}, 'Writing geojson');
+    const fileWrites: Q.IPromise<void>[] = [];
 
-    return qFs.write(opts.outFileName, JSON.stringify(geoJson, null, 2));
+    logger.info({outFile: opts.outFileName}, 'Writing geojson');
+    fileWrites.push(qFs.write(opts.outFileName + '.geojson', JSON.stringify(geoJson, null, 2)));
+
+    if (opts.generateOsm) {
+        logger.info({outFile: opts.outFileName}, 'Writing osm');
+        fileWrites.push(qFs.write(opts.outFileName + '.osm', osmAndGeojson.geojson2osm(geoJson)));
+    }
+
+    return q.all(fileWrites);
 }
 
 module.exports = iberville;

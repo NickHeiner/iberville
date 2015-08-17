@@ -14,6 +14,7 @@ interface IGenerateCityOpts {
             includeVoronoiPointsInOutput: boolean;
         }
     };
+    generateOsm: boolean;
     streetGrid: {
         enable: boolean;
         noiseResolution: {
