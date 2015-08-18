@@ -39,9 +39,13 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             lake: {
                 enable: true,
                 noiseResolution: {
-                    distance: .1,
-                    units: 'kilometers'
+                    distance: .005,
+                    units: 'kilometers',
                 },
+                noiseCoordinatesCoefficient: 100000,
+                debug: {
+                    includeNoisePointsInOutput: true
+                }
             },
             generateOsm: false,
             streetGrid: {
@@ -61,7 +65,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 minimumBlockSizeKilometers: .1,
                 maxBlockSizeKilometers: 1
             },
-            seed: 'default-seed'
+            seed: 'default-seed-2-asdf'
         },
         opts = _.merge({}, defaults, rawOpts),
         geoJson = createCity(_.omit(opts, 'outFileName')),

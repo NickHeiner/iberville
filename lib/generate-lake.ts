@@ -21,12 +21,27 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             opts.centerCoordinates.long + opts.radius,
         ],
         pointGrid = turfPointGrid(extent, opts.lake.noiseResolution.distance, opts.lake.noiseResolution.units),
-        perlinNoisePoints = _.map(
+        perlinNoisePoints =  _.map(
             pointGrid.features,
-            (point: GeoJSON.Feature) => ({
-                point: point,
-                noise: perlin.noise.perlin2.apply(perlin.noise, point.geometry.coordinates)
-            })
+            (point: GeoJSON.Feature) => {
+                const noiseValue = perlin.noise.perlin2(
+                    point.geometry.coordinates[0] * opts.lake.noiseCoordinatesCoefficient,
+                    point.geometry.coordinates[1] * opts.lake.noiseCoordinatesCoefficient
+                );
+
+                _.merge(point.properties, {
+                    noise: {
+                        value: noiseValue,
+                        algorithm: 'perlin'
+                    },
+                    createdFor: 'lake'
+                });
+
+                return {
+                    point: point,
+                    noise: noiseValue
+                };
+            }
         ),
         maxNoisePoint: INoisePoint = _.max(perlinNoisePoints, 'noise'),
         nonMaxPoints: INoisePoint[] = _.reject(perlinNoisePoints, {noise: maxNoisePoint}),
@@ -34,21 +49,32 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     logger.warn({lowerThreshold, maxNoisePoint}, 'Preparing to grow lake');
 
-    function growLake(lakePoints: INoisePoint[], possiblePoints: INoisePoint[]): INoisePoint[] {
+    function growLake(lakePoints: INoisePoint[], possiblePoints: INoisePoint[]):
+            {lake: GeoJSON.Feature[], nonLake: GeoJSON.Feature[]} {
+        function toGeoJson(noisePoints: INoisePoint[]): GeoJSON.Feature[] {
+            return _.map(noisePoints, 'point');
+        }
+
         if (!possiblePoints.length) {
-            return lakePoints;
+            return _.mapValues({lake: lakePoints, nonLake: possiblePoints}, toGeoJson);
         }
 
         const distances = _(possiblePoints)
             .countBy(({point}: INoisePoint) => turfDistance(point, lakePoints[0].point))
+            .values()
+            .uniq()
             .value();
 
         logger.warn({distances}, 'found distances');
 
-        return lakePoints;
+        return _.mapValues({lake: lakePoints, nonLake: possiblePoints}, toGeoJson);
     }
 
-    return turfFeatureCollection(_.map(growLake([maxNoisePoint], nonMaxPoints), 'point'));
+    const {lake, nonLake} = growLake([maxNoisePoint], nonMaxPoints);
+
+    return turfFeatureCollection(lake.concat(
+        opts.lake.debug.includeNoisePointsInOutput ? nonLake : []
+    ));
 }
 
 export = generateLake;

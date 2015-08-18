@@ -20,6 +20,10 @@ interface IGenerateCityOpts {
             distance: number;
             units: string;
         },
+        noiseCoordinatesCoefficient: number;
+        debug: {
+            includeNoisePointsInOutput: boolean;
+        }
     };
     generateOsm: boolean;
     streetGrid: {
