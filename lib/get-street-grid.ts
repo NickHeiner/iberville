@@ -1,46 +1,26 @@
-import '../types';
 import logger = require('../util/logger/index');
-import increaseGridDensity = require('./increase-grid-density');
 
-const turfBboxPolygon = require('turf-bbox-polygon'),
-    turfArea = require('turf-area'),
-    turfFeatureCollection = require('turf-featurecollection'),
+const LSystem = require('../vendor/l-system'),
     _ = require('lodash');
 
-function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
 
     if (!opts.streetGrid.enable) {
         logger.warn('Skipping street grid generation because opts.streetGrid.enable = false');
-        return turfFeatureCollection([]);
+        return [];
     }
 
-    const extent = [
-            opts.centerCoordinates.lat - opts.radius,
-            opts.centerCoordinates.long - opts.radius,
-            opts.centerCoordinates.lat + opts.radius,
-            opts.centerCoordinates.long + opts.radius,
-        ],
-        grid = increaseGridDensity(turfBboxPolygon(extent), opts),
-        maxBlockSizeMeters = opts.streetGrid.maxBlockSizeKilometers * 1000,
-        featuresWithoutLargeBlocks = _.reject(
-            grid.features,
-            (feature: GeoJSON.Feature) => {
-                const areaMeters = turfArea(feature),
-                    isBlockTooBig = areaMeters > maxBlockSizeMeters;
+    const axiom = 'CityCenter',
+        productions = {
+            CityCenter: 'B'
+        },
+        streetGridLSystem = new LSystem(axiom, productions);
 
-                logger.debug({
-                    blockAreaMeters: areaMeters,
-                    maxBlockSizeMeters: maxBlockSizeMeters,
-                    isBlockTooBig: isBlockTooBig
-                }, 'Rejecting block if it is too big');
+    _.times(2, streetGridLSystem.step.bind(streetGridLSystem));
 
-                return isBlockTooBig;
-            }
-        );
+    logger.warn({current: streetGridLSystem.current}, 'steps complete');
 
-    grid.features = featuresWithoutLargeBlocks;
-
-    return grid;
+    return [];
 }
 
 export = getStreetGrid;

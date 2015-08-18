@@ -27,6 +27,7 @@
     "color": "^0.10.1",
     "flat": "^1.6.0",
     "geojsonhint": "^1.1.0",
+    "l-system": "https://github.com/NickHeiner/l-system/tarball/fixes",
     "lodash": "^3.10.0",
     "md5": "^2.0.0",
     "minimist": "^1.1.2",
