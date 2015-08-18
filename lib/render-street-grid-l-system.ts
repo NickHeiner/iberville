@@ -8,14 +8,16 @@ const _ = require('lodash'),
 interface IRenderContext {
     features: GeoJSON.Feature[];
     startPoint: number[];
+    branchPoint: number[];
 }
 
 function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSON.Feature[] {
     logger.warn({seq}, 'Rendering l system');
 
     return _.reduce(seq, (renderContext: IRenderContext, char: string) => {
-        let nextFeatures: GeoJSON.Feature[],
-            nextStartPoint: number[];
+        let nextFeatures: GeoJSON.Feature[] = [],
+            nextStartPoint = renderContext.startPoint,
+            nextBranchPoint = renderContext.branchPoint;
 
         switch (char) {
             case 'C':
@@ -41,15 +43,33 @@ function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSO
                 nextStartPoint = highwayEndPoint;
                 break;
 
+            case '[':
+                nextBranchPoint = renderContext.startPoint;
+                break;
+
+            case ']':
+                nextStartPoint = nextBranchPoint;
+                nextBranchPoint = null;
+
+            case 'S':
+                const streetEndPoint = [renderContext.startPoint[0] + .0001, renderContext.startPoint[1]];
+                nextFeatures = [
+                    turfLinestring([
+                        renderContext.startPoint,
+                        streetEndPoint
+                    ])
+                ];
+                nextStartPoint = streetEndPoint;
+                break;
+
             default:
                 logger.warn({char}, 'renderStreetGridLSystem: unrecognized character.');
-                nextFeatures = [];
-                nextStartPoint = renderContext.startPoint;
         }
 
         return {
             features: renderContext.features.concat(nextFeatures),
-            startPoint: nextStartPoint
+            startPoint: nextStartPoint,
+            branchPoint: nextBranchPoint
         };
 
     }, {features: []}).features;
