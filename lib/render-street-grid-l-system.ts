@@ -3,10 +3,15 @@ import logger = require('../util/logger/index');
 const _ = require('lodash'),
     turfPolygon = require('turf-polygon');
 
+// Is interface private to this module?
+interface IRenderContext {
+    features: GeoJSON.Feature[];
+}
+
 function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSON.Feature[] {
     logger.warn({seq}, 'Rendering l system');
 
-    return _.reduce(seq, (features: GeoJSON.Feature[], char: string) => {
+    return _.reduce(seq, (renderContext: IRenderContext, char: string) => {
         let nextFeatures: GeoJSON.Feature[];
 
         switch (char) {
@@ -25,9 +30,11 @@ function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSO
                 nextFeatures = [];
         }
 
-        return features.concat(nextFeatures);
+        return {
+            features: renderContext.features.concat(nextFeatures)
+        };
 
-    }, []);
+    }, {features: []}).features;
 }
 
 export = renderStreetGridLSystem;
