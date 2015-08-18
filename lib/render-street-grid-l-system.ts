@@ -15,6 +15,15 @@ function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSO
     logger.warn({seq}, 'Rendering l system');
 
     return _.reduce(seq, (renderContext: IRenderContext, char: string) => {
+        logger.warn({
+            renderContext: {
+                startPoint: renderContext.startPoint,
+                branchPoint: renderContext.branchPoint,
+                featuresLen: renderContext.features.length
+            },
+            char
+        }, 'Rendering l-system character');
+
         let nextFeatures: GeoJSON.Feature[] = [],
             nextStartPoint = renderContext.startPoint,
             nextBranchPoint = renderContext.branchPoint;
@@ -29,7 +38,7 @@ function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSO
                     [opts.centerCoordinates.lat + .0001, opts.centerCoordinates.long + .0001],
                 ]]);
                 nextFeatures = [cityCenterPoly];
-                nextStartPoint = [opts.centerCoordinates.lat, opts.centerCoordinates.long + .00005];
+                nextStartPoint = [opts.centerCoordinates.lat, opts.centerCoordinates.long + .0001];
                 break;
 
             case 'H':
@@ -50,6 +59,7 @@ function renderStreetGridLSystem(opts: IGenerateCityOpts, seq: string[]): GeoJSO
             case ']':
                 nextStartPoint = nextBranchPoint;
                 nextBranchPoint = null;
+                break;
 
             case 'S':
                 const streetEndPoint = [renderContext.startPoint[0] + .0001, renderContext.startPoint[1]];
