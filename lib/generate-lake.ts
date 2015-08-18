@@ -64,8 +64,17 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             return {lake: lakePoints, nonLake: possiblePoints};
         }
 
-        function shouldAddToLake({distance, noise}: INoisePointDistance): boolean {
-            return distance < opts.lake.noiseResolution.distance * 2 && noise > lowerThreshold;
+        function shouldAddToLake({distance, noise, point}: INoisePointDistance): boolean {
+            const isCloseEnough = distance < opts.lake.noiseResolution.distance * 2,
+                meetsNoiseThreshold = noise > lowerThreshold;
+
+            // This is SO bad.
+            _.merge(point.properties, {
+                lakeSelection_isCloseEnough: isCloseEnough,
+                lakeSelection_meetsNoiseThreshold: meetsNoiseThreshold
+            });
+
+            return isCloseEnough && meetsNoiseThreshold;
         }
 
         const pointsByDistance =
