@@ -1,7 +1,7 @@
 import logger = require('../util/logger/index');
+import lSystem = require('./l-system');
 
-const LSystem = require('../vendor/l-system'),
-    _ = require('lodash');
+const _ = require('lodash');
 
 function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
 
@@ -14,9 +14,8 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
         productions = {
             CityCenter: 'B'
         },
-        streetGridLSystem = new LSystem(axiom, productions);
-
-    _.times(2, streetGridLSystem.step.bind(streetGridLSystem));
+        stepCount = 2,
+        streetGridLSystem = _(stepCount).range().reduce((acc: ILSystem) => acc.nextStep(), lSystem(axiom, productions));
 
     logger.warn({current: streetGridLSystem.current}, 'steps complete');
 
