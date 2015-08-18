@@ -2,6 +2,7 @@ import logger = require('../util/logger/index');
 
 const _ = require('lodash'),
     perlin = require('perlin'),
+    Alea = require('alea'),
     color = require('color'),
     turfDistance = require('turf-distance'),
     turfPointGrid = require('turf-point-grid'),
@@ -18,7 +19,9 @@ interface INoisePointDistance extends INoisePoint {
 }
 
 function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
-    perlin.noise.seed(perlin);
+    // TODO consider factoring creation of pRNG out so it is consistent.
+    const pRNG = new Alea(opts.seed);
+    perlin.noise.seed(pRNG());
 
     const extent = [
             opts.centerCoordinates.lat - opts.radius,

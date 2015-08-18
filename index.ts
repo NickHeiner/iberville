@@ -68,7 +68,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 minimumBlockSizeKilometers: .1,
                 maxBlockSizeKilometers: 1
             },
-            seed: 'default-seed-2-asdf'
+            seed: 'default-seed'
         },
         opts = _.merge({}, defaults, rawOpts),
         geoJson = createCity(_.omit(opts, 'outFileName')),
