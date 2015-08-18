@@ -14,7 +14,7 @@ function createCity(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         lake = logStep({step: 'generating lake'}, () => generateLake(opts)),
         river = logStep({step: 'generating river'}, () => generateRiver(opts)),
 
-        lowestPriorityElements = streetGrid,
+        lowestPriorityElements = turfFeatureCollection(streetGrid),
         highestPriorityElements = turfFeatureCollection(_.flatten([lake].concat(river)));
 
     return logStep(

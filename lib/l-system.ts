@@ -1,5 +1,6 @@
 const _ = require('lodash');
 
+// Maybe instead of strings we can use Enums for this.
 function lSystem(axiom: string, productions: Object): ILSystem {
 
     function lSystemRec(previous: string) {

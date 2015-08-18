@@ -19,7 +19,7 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
         stepCount = 3,
         streetGridLSystem = _(stepCount).range().reduce((acc: ILSystem) => acc.nextStep(), lSystem(axiom, productions));
 
-    return renderStreetGridLSystem(streetGridLSystem);
+    return renderStreetGridLSystem(opts, streetGridLSystem.current);
 }
 
 export = getStreetGrid;
