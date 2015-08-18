@@ -2,6 +2,7 @@ import logger = require('../util/logger/index');
 
 const _ = require('lodash'),
     perlin = require('perlin'),
+    color = require('color'),
     turfDistance = require('turf-distance'),
     turfPointGrid = require('turf-point-grid'),
     turfFeatureCollection = require('turf-featurecollection');
@@ -30,11 +31,10 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                 );
 
                 _.merge(point.properties, {
-                    noise: {
-                        value: noiseValue,
-                        algorithm: 'perlin'
-                    },
-                    createdFor: 'lake'
+                    noise_value: noiseValue,
+                    noise_algorithm: 'perlin',
+                    createdFor: 'lake',
+                    'marker-color': color('#fff').darken(1 - (noiseValue + 1) / 2).hexString()
                 });
 
                 return {

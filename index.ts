@@ -39,7 +39,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             lake: {
                 enable: true,
                 noiseResolution: {
-                    distance: .005,
+                    distance: .01,
                     units: 'kilometers',
                 },
                 noiseCoordinatesCoefficient: 100000,

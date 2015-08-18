@@ -24,6 +24,7 @@
     "bunyan": "^1.4.0",
     "bunyan-format": "^0.2.1",
     "chalk": "^1.1.0",
+    "color": "^0.10.1",
     "flat": "^1.6.0",
     "geojsonhint": "^1.1.0",
     "lodash": "^3.10.0",
