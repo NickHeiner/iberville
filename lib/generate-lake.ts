@@ -71,7 +71,10 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         const pointsByDistance =
                 _(possiblePoints)
                     .map((noisePoint: INoisePoint) => {
-                        const distance = turfDistance(noisePoint.point, lakePoints[0].point);
+                        const distance = _(lakePoints)
+                            .map(({point}: INoisePoint) => turfDistance(noisePoint.point, point))
+                            .min();
+
                         return _.merge({}, noisePoint, {distance});
                     })
                     .sortBy('distance'),
