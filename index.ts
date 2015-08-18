@@ -1,6 +1,7 @@
 /// <reference path='./typings/tsd.d.ts' />
 
 import createCity = require('./lib/create-city');
+import logger = require('./util/logger/index');
 
 import './types';
 
@@ -8,8 +9,6 @@ const qFs = require('q-io/fs'),
     osmAndGeojson = require('osm-and-geojson'),
     _ = require('lodash'),
     q = require('q'),
-    logger = require('./util/logger'),
-    moment = require('moment'),
     md5 = require('md5'),
     geoJsonHint = require('geojsonhint');
 
@@ -21,8 +20,7 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    const startTime = moment(),
-        defaults: IGenerateCityOpts = {
+    const defaults: IGenerateCityOpts = {
             centerCoordinates: {
                 lat: 0,
                 long: 0
@@ -32,7 +30,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             radius: .0015,
             river: {
                 enable: true,
-                voronoiPointCount: 300,
+                voronoiPointCount: 1000,
                 debug: {
                     includeVoronoiPointsInOutput: false,
                     includeVoronoiLinesInOutput: false
@@ -64,7 +62,6 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
         geoJsonHash = md5(JSON.stringify(geoJson));
 
     logger.warn({
-        timeSeconds: moment().diff(startTime, 'seconds', true),
         countFeatures: geoJson.features.length,
 
         // This makes it easier to see if anything has changed. Without this, you have to copy/paste the output
