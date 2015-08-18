@@ -49,7 +49,7 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         ),
         maxNoisePoint: INoisePoint = _.max(perlinNoisePoints, 'noise'),
         nonMaxPoints: INoisePoint[] = _.reject(perlinNoisePoints, {noise: maxNoisePoint}),
-        lowerThreshold = maxNoisePoint.noise * .5;
+        lowerThreshold = maxNoisePoint.noise * opts.lake.noiseLowerThresholdCoefficient;
 
     maxNoisePoint.point.properties.isMaxNoisePoint = true;
 

@@ -21,6 +21,7 @@ interface IGenerateCityOpts {
             units: string;
         },
         noiseCoordinatesCoefficient: number;
+        noiseLowerThresholdCoefficient: number;
         debug: {
             includeNoisePointsInOutput: boolean;
         }
