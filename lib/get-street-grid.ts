@@ -12,9 +12,10 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
 
     const axiom = 'C',
         productions = {
-            C: 'B',
+            C: 'CH',
+            H: 'HH[S]',
         },
-        stepCount = 2,
+        stepCount = 3,
         streetGridLSystem = _(stepCount).range().reduce((acc: ILSystem) => acc.nextStep(), lSystem(axiom, productions));
 
     logger.warn({current: streetGridLSystem.current}, 'steps complete');
