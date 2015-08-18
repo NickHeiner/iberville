@@ -1,10 +1,23 @@
+const _ = require('lodash');
+
 function lSystem(axiom: string, productions: Object): ILSystem {
-    let system: ILSystem;
-    system = {
-        nextStep: () => system,
-        current: []
+
+    function lSystemRec(previous: string) {
+        const current = _.reduce(previous, (nextStateAcc: string, char: string) => {
+            const production = _.get(productions, char, char);
+            return nextStateAcc + production;
+        }, '');
+
+        return {
+            nextStep: () => lSystemRec(current),
+            current
+        };
+    }
+
+    return {
+        nextStep: () => lSystemRec(axiom),
+        current: [axiom]
     };
-    return system;
 }
 
 export = lSystem;

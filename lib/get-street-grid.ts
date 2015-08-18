@@ -10,9 +10,9 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
         return [];
     }
 
-    const axiom = 'CityCenter',
+    const axiom = 'C',
         productions = {
-            CityCenter: 'B'
+            C: 'B',
         },
         stepCount = 2,
         streetGridLSystem = _(stepCount).range().reduce((acc: ILSystem) => acc.nextStep(), lSystem(axiom, productions));
