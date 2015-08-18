@@ -51,13 +51,15 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         nonMaxPoints: INoisePoint[] = _.reject(perlinNoisePoints, {noise: maxNoisePoint}),
         lowerThreshold = maxNoisePoint.noise * .5;
 
-    logger.warn({lowerThreshold, maxNoisePoint}, 'Preparing to grow lake');
+    maxNoisePoint.point.properties.isMaxNoisePoint = true;
+
+    logger.debug({lowerThreshold, maxNoisePoint}, 'Preparing to grow lake');
 
     function toGeoJson(noisePoints: INoisePoint[]): GeoJSON.Feature[] {
         return _.map(noisePoints, 'point');
     }
 
-    function growLake(lakePoints: INoisePoint[], possiblePoints: INoisePoint[]):
+    function growLake(lakePoints: INoisePoint[], possiblePoints: INoisePoint[], iterationCount: number):
             {lake: INoisePoint[], nonLake: INoisePoint[]} {
 
         if (!possiblePoints.length) {
@@ -74,8 +76,20 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                 lakeSelection_meetsNoiseThreshold: meetsNoiseThreshold
             });
 
+            logger.trace({
+                isCloseEnough,
+                meetsNoiseThreshold,
+                shouldAdd: isCloseEnough && meetsNoiseThreshold,
+                noise
+            }, 'Considering adding point');
+
             return isCloseEnough && meetsNoiseThreshold;
         }
+
+        logger.trace({
+            lakePointsLen: lakePoints.length,
+            possiblePointsLen: possiblePoints.length
+        }, 'Preparing to distinguish new lake points and non lake points');
 
         const pointsByDistance =
                 _(possiblePoints)
@@ -85,17 +99,24 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                             .min();
 
                         return _.merge({}, noisePoint, {distance});
-                    })
-                    .sortBy('distance'),
+                    }),
+
             newLakePoints = pointsByDistance
-                .takeWhile(shouldAddToLake)
+                .filter(shouldAddToLake)
                 .each(({point}: INoisePoint) => {
-                    point.properties['marker-color'] = color('red').hexString();
+                    point.properties.lakeIterationAdded = iterationCount;
                 })
                 .value(),
-            nonLakePoints = pointsByDistance.dropWhile(shouldAddToLake).value();
 
-        logger.warn({
+            nonLakePoints = pointsByDistance
+                .reject(shouldAddToLake)
+                .each(({point}: INoisePoint) => {
+                    point.properties.lakeIterationsSkipped = point.properties.lakeIterationsSkipped || [];
+                    point.properties.lakeIterationsSkipped.push(iterationCount);
+                })
+                .value();
+
+        logger.debug({
             newLakePointsLen: newLakePoints.length, nonLakePointsLen: nonLakePoints.length
         }, 'Identified which points can be added to the lake');
 
@@ -103,10 +124,15 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             return {lake: lakePoints, nonLake: possiblePoints};
         }
 
-        return growLake(newLakePoints.concat(lakePoints), nonLakePoints);
+        return growLake(newLakePoints.concat(lakePoints), nonLakePoints, iterationCount + 1);
     }
 
-    const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints), toGeoJson);
+    const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints, 0), toGeoJson);
+
+    _.each(lake, (point: GeoJSON.Feature) => {
+        point.properties['marker-color'] = color('red').hexString();
+        point.properties.chosenForLake = true;
+    });
 
     return turfFeatureCollection(lake.concat(
         opts.lake.debug.includeNoisePointsInOutput ? nonLake : []
