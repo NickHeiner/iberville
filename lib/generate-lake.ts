@@ -17,7 +17,7 @@ interface INoisePointDistance extends INoisePoint {
     distance: number;
 }
 
-function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
     perlin.noise.seed(perlin);
 
     const extent = [
@@ -140,13 +140,11 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         point.properties.chosenForLake = true;
     });
 
-    logger.warn({lakeHull}, 'produced lake hull');
+    logger.debug({lakeHull}, 'produced lake hull');
 
-    return turfFeatureCollection(
-        [lakeHull]
-            .concat(opts.lake.debug.includeNoisePointsInOutput ? nonLake : [])
-            .concat(opts.lake.debug.includeLakePointsInOutput ? lake : [])
-    );
+    return [lakeHull]
+        .concat(opts.lake.debug.includeNoisePointsInOutput ? nonLake : [])
+        .concat(opts.lake.debug.includeLakePointsInOutput ? lake : []);
 }
 
 export = generateLake;
