@@ -20,6 +20,7 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
+    // Show how tweaking all these values changes the output.
     const defaults: IGenerateCityOpts = {
             centerCoordinates: {
                 lat: 0,
@@ -34,6 +35,19 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 debug: {
                     includeVoronoiPointsInOutput: false,
                     includeVoronoiLinesInOutput: false
+                }
+            },
+            lake: {
+                enable: true,
+                noiseResolution: {
+                    distance: .007,
+                    units: 'kilometers',
+                },
+                noiseCoordinatesCoefficient: 1500,
+                noiseLowerThresholdCoefficient: .5,
+                debug: {
+                    includeNoisePointsInOutput: false,
+                    includeLakePointsInOutput: false
                 }
             },
             generateOsm: false,

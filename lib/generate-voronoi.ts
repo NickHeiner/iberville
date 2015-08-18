@@ -23,11 +23,6 @@ interface IVoronoiEdge {
 function generateVoronoi(opts: IGenerateCityOpts):
         {lines: GeoJSON.FeatureCollection; points: GeoJSON.FeatureCollection} {
 
-    if (!opts.river.enable) {
-        logger.debug('Skipping river generation because opts.river.enable = false');
-        return turfFeatureCollection([]);
-    }
-
     // TODO consider factoring creation of pRNG out so it is consistent.
     const pRNG = new Alea(opts.seed),
         bbox = {

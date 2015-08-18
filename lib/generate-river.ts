@@ -2,12 +2,16 @@ import '../types';
 import logger = require('../util/logger/index');
 import generateVoronoi = require('./generate-voronoi');
 
-const turfFeatureCollection = require('turf-featurecollection'),
-    turfLineString = require('turf-linestring'),
+const turfLineString = require('turf-linestring'),
     Alea = require('alea'),
     _ = require('lodash');
 
-function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+function generateRiver(opts: IGenerateCityOpts): GeoJSON.Feature[] {
+    if (!opts.river.enable) {
+        logger.debug('Skipping river generation because opts.river.enable = false');
+        return [];
+    }
+
     // TODO consider factoring creation of pRNG out so it is consistent.
     const pRNG = new Alea(opts.seed);
 
@@ -68,11 +72,9 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
                 .value()
         );
 
-    return turfFeatureCollection(
-        [riverLineString]
-            .concat(debugPoints.features)
-            .concat(opts.river.debug.includeVoronoiLinesInOutput ? allRiverEdges.features : [])
-    );
+    return [riverLineString]
+        .concat(debugPoints.features)
+        .concat(opts.river.debug.includeVoronoiLinesInOutput ? allRiverEdges.features : []);
 }
 
 export = generateRiver;

@@ -14,6 +14,19 @@ interface IGenerateCityOpts {
             includeVoronoiLinesInOutput: boolean;
         }
     };
+    lake: {
+        enable: boolean;
+        noiseResolution: {
+            distance: number;
+            units: string;
+        },
+        noiseCoordinatesCoefficient: number;
+        noiseLowerThresholdCoefficient: number;
+        debug: {
+            includeNoisePointsInOutput: boolean;
+            includeLakePointsInOutput: boolean;
+        }
+    };
     generateOsm: boolean;
     streetGrid: {
         enable: boolean;
