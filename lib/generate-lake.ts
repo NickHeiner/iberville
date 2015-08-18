@@ -5,6 +5,7 @@ const _ = require('lodash'),
     color = require('color'),
     turfDistance = require('turf-distance'),
     turfPointGrid = require('turf-point-grid'),
+    turfConcave = require('turf-concave'),
     turfFeatureCollection = require('turf-featurecollection');
 
 interface INoisePoint {
@@ -127,16 +128,25 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         return growLake(newLakePoints.concat(lakePoints), nonLakePoints, iterationCount + 1);
     }
 
-    const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints, 0), toGeoJson);
+    const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints, 0), toGeoJson),
+        lakeHull = turfConcave(turfFeatureCollection(lake), .01, 'kilometers');
+
+    if (!lakeHull) {
+        throw new Error('Invalid parameters passed to turfConcave; lakeHull was undefined.');
+    }
 
     _.each(lake, (point: GeoJSON.Feature) => {
         point.properties['marker-color'] = color('red').hexString();
         point.properties.chosenForLake = true;
     });
 
-    return turfFeatureCollection(lake.concat(
-        opts.lake.debug.includeNoisePointsInOutput ? nonLake : []
-    ));
+    logger.warn({lakeHull}, 'produced lake hull');
+
+    return turfFeatureCollection(
+        [lakeHull]
+            .concat(opts.lake.debug.includeNoisePointsInOutput ? nonLake : [])
+            .concat(opts.lake.debug.includeLakePointsInOutput ? lake : [])
+    );
 }
 
 export = generateLake;

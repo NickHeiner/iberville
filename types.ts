@@ -24,6 +24,7 @@ interface IGenerateCityOpts {
         noiseLowerThresholdCoefficient: number;
         debug: {
             includeNoisePointsInOutput: boolean;
+            includeLakePointsInOutput: boolean;
         }
     };
     generateOsm: boolean;

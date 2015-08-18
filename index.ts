@@ -46,7 +46,8 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 noiseCoordinatesCoefficient: 1500,
                 noiseLowerThresholdCoefficient: .5,
                 debug: {
-                    includeNoisePointsInOutput: false
+                    includeNoisePointsInOutput: false,
+                    includeLakePointsInOutput: false
                 }
             },
             generateOsm: false,
