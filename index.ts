@@ -30,7 +30,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             // and not need to tweak this value as well.
             radius: .0015,
             river: {
-                enable: true,
+                enable: false,
                 voronoiPointCount: 1000,
                 debug: {
                     includeVoronoiPointsInOutput: false,
@@ -46,13 +46,14 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 noiseCoordinatesCoefficient: 1500,
                 noiseLowerThresholdCoefficient: .5,
                 debug: {
-                    includeNoisePointsInOutput: false,
-                    includeLakePointsInOutput: false
+                    includeNoisePointsInOutput: true,
+                    includeLakePointsInOutput: false,
+                    omitLake: true
                 }
             },
             generateOsm: false,
             streetGrid: {
-                enable: true,
+                enable: false,
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'

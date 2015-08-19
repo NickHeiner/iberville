@@ -25,6 +25,7 @@ interface IGenerateCityOpts {
         debug: {
             includeNoisePointsInOutput: boolean;
             includeLakePointsInOutput: boolean;
+            omitLake: boolean;
         }
     };
     generateOsm: boolean;

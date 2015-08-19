@@ -130,6 +130,10 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
 
         return growLake(newLakePoints.concat(lakePoints), nonLakePoints, iterationCount + 1);
     }
+    
+    if (opts.lake.debug.includeNoisePointsInOutput && opts.lake.debug.omitLake) {
+        return _.map([maxNoisePoint].concat(nonMaxPoints), 'point');
+    }
 
     const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints, 0), toGeoJson),
         lakeHull = turfConcave(turfFeatureCollection(lake), .01, 'kilometers');
