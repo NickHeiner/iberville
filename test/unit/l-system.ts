@@ -3,13 +3,13 @@
 import '../../types';
 import lSystem = require('../../lib/l-system');
 
-const tape = require('tape');
+const tape = require('tape'),
+    _ = require('lodash');
 
 interface IT {
     plan: (count: number) => void;
     test: (name: string, testFn: (t: IT) => void) => void;
     equal: (a: any, b: any, message: string) => void;
-    deepEqual: (a: any, b: any, message: string) => void;
 }
 
 tape('lSystem', function(t: IT) {
@@ -20,8 +20,16 @@ tape('lSystem', function(t: IT) {
                 X: 'F−[[X]+X]+F[+FX]−X)',
                 F: 'FF'
             }),
-            time0 = plant.current;
-        
-        t.deepEqual(time0, ['X'], 'starts with axiom');	
+            {steps} = _(3)
+                .range()
+                .reduce(
+                    (acc: {steps: string[][], system: ILSystem}) => ({
+                        steps: acc.steps.concat(acc.system.current), 
+                        system: acc.system.nextStep()
+                    }), 
+                    {steps: [], system: plant}
+                );
+                
+        t.equal(steps[0], 'X', 'starts with axiom');
     });
 });
