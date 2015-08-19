@@ -14,7 +14,7 @@ interface IT {
 
 tape('lSystem', function(t: IT) {
     t.test('fractal plant', function(t: IT) {
-        t.plan(1);
+        t.plan(3);
         
         const plant = lSystem('X', {
                 X: 'F−[[X]+X]+F[+FX]−X)',
@@ -31,5 +31,11 @@ tape('lSystem', function(t: IT) {
                 );
                 
         t.equal(steps[0], 'X', 'starts with axiom');
+        t.equal(steps[1], 'F−[[X]+X]+F[+FX]−X)', 'correct for step 1');
+        t.equal(
+            steps[2], 
+            'FF−[[F−[[X]+X]+F[+FX]−X)]+F−[[X]+X]+F[+FX]−X)]+FF[+FFF−[[X]+X]+F[+FX]−X)]−F−[[X]+X]+F[+FX]−X))', 
+            'correct for step 1'
+        );
     });
 });
