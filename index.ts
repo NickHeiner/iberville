@@ -28,9 +28,9 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             },
             // TODO: Make this km so we can easily transpose the city around the world
             // and not need to tweak this value as well.
-            radius: .0015,
+            radius: .004,
             river: {
-                enable: false,
+                enable: true,
                 voronoiPointCount: 1000,
                 debug: {
                     includeVoronoiPointsInOutput: false,
@@ -53,7 +53,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             },
             generateOsm: false,
             streetGrid: {
-                enable: false,
+                enable: true,
                 noiseResolution: {
                     distance: .1,
                     units: 'kilometers'
