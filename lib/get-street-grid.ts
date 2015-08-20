@@ -1,25 +1,46 @@
+import '../types';
 import logger = require('../util/logger/index');
-import lSystem = require('./l-system');
-import renderStreetGridLSystem = require('./render-street-grid-l-system');
+import increaseGridDensity = require('./increase-grid-density');
 
-const _ = require('lodash');
+const turfBboxPolygon = require('turf-bbox-polygon'),
+    turfArea = require('turf-area'),
+    turfFeatureCollection = require('turf-featurecollection'),
+    _ = require('lodash');
 
-function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.Feature[] {
+function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     if (!opts.streetGrid.enable) {
         logger.warn('Skipping street grid generation because opts.streetGrid.enable = false');
-        return [];
+        return turfFeatureCollection([]);
     }
 
-    const axiom = 'C',
-        productions = {
-            C: 'CH',
-            H: 'HH[S]',
-        },
-        stepCount = 3,
-        streetGridLSystem = _(stepCount).range().reduce((acc: ILSystem) => acc.nextStep(), lSystem(axiom, productions));
+    const extent = [
+            opts.centerCoordinates.lat - opts.radius,
+            opts.centerCoordinates.long - opts.radius,
+            opts.centerCoordinates.lat + opts.radius,
+            opts.centerCoordinates.long + opts.radius,
+        ],
+        grid = increaseGridDensity(turfBboxPolygon(extent), opts),
+        maxBlockSizeMeters = opts.streetGrid.maxBlockSizeKilometers * 1000,
+        featuresWithoutLargeBlocks = _.reject(
+            grid.features,
+            (feature: GeoJSON.Feature) => {
+                const areaMeters = turfArea(feature),
+                    isBlockTooBig = areaMeters > maxBlockSizeMeters;
 
-    return renderStreetGridLSystem(opts, streetGridLSystem.current);
+                logger.debug({
+                    blockAreaMeters: areaMeters,
+                    maxBlockSizeMeters: maxBlockSizeMeters,
+                    isBlockTooBig: isBlockTooBig
+                }, 'Rejecting block if it is too big');
+
+                return isBlockTooBig;
+            }
+        );
+
+    grid.features = featuresWithoutLargeBlocks;
+
+    return grid;
 }
 
 export = getStreetGrid;
