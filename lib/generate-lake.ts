@@ -19,6 +19,11 @@ interface INoisePointDistance extends INoisePoint {
 }
 
 function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
+
+    if (!opts.lake.enable) {
+        return [];
+    }
+
     // TODO consider factoring creation of pRNG out so it is consistent.
     const pRNG = new Alea(opts.seed);
     perlin.noise.seed(pRNG());

@@ -2,19 +2,24 @@
   "name": "iberville",
   "version": "0.0.1",
   "description": "Experiment in generating a city map procedurally",
-  "repository": "https://github.com/NickHeiner/iberville",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NickHeiner/iberville.git"
+  },
   "author": "Nick Heiner <nth23@cornell.edu>",
   "bin": {
     "create-city": "./bin/iberville.js"
   },
   "scripts": {
-    "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts && tsc -p .",
-    "test": "npm run start",
+    "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts test/**/*.ts && tsc -p . && tsc -p test",
+    "test": "TAP=1 tape test/**/*.js | tap-difflet",
     "prepublish": "tsd reinstall",
     "start": "./bin/iberville.js --out generated"
   },
   "license": "MIT",
   "devDependencies": {
+    "tap-difflet": "^0.3.0",
+    "tape": "^4.0.1",
     "tsc": "^1.20150623.0",
     "tsd": "^0.6.3",
     "tslint": "^2.4.2"
@@ -27,6 +32,7 @@
     "color": "^0.10.1",
     "flat": "^1.6.0",
     "geojsonhint": "^1.1.0",
+    "l-system": "https://github.com/NickHeiner/l-system/tarball/fixes",
     "lodash": "^3.10.0",
     "md5": "^2.0.0",
     "minimist": "^1.1.2",

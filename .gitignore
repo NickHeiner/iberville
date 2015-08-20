@@ -1,4 +1,5 @@
 /typings/
 **/*.js
+!vendor/**/*.js
 /node_modules/
 /generated.*

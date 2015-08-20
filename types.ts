@@ -47,3 +47,9 @@ interface IGenerateCityOpts {
 interface ICreateCityOpts extends IGenerateCityOpts {
     outFileName: string;
 }
+
+interface ILSystem {
+    nextStep: () => ILSystem;
+    current: string[];
+}
+
