@@ -47,7 +47,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                     units: 'kilometers',
                 },
                 noiseCoordinatesCoefficient: 1500,
-                noiseLowerThresholdCoefficient: .3,
+                noiseLowerThresholdCoefficient: .5,
                 debug: {
                     includeNoisePointsInOutput: false,
                     includeLakePointsInOutput: false,
@@ -71,8 +71,8 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 // Increasing this value makes blocks further away from the city center less likely to subdivide.
                 noiseThresholdDistanceFromCenterCoefficient: 2.5,
 
-                minimumBlockSizeKilometers: .1,
-                maxBlockSizeKilometers: 1
+                minimumBlockSizeKilometers: 1,
+                maxBlockSizeKilometers: Infinity
             },
             removeIntersectingElements: true,
             seed: 'default-seed'

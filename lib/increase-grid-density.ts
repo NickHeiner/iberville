@@ -1,4 +1,5 @@
 import logger = require('../util/logger/index');
+import perturbStreetGrid = require('./perturb-street-grid');
 
 const _ = require('lodash'),
     alea = require('alea'),
@@ -121,7 +122,9 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
         return turfFeatureCollection(recursivelySubdividedFeatures);
     }
 
-    return increaseGridDensityRec(basePoly, 1);
+    const increasedDensity = increaseGridDensityRec(basePoly, 1);
+
+    return perturbStreetGrid(opts, increasedDensity);
 }
 
 export = increaseGridDensity;
