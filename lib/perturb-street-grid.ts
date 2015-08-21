@@ -13,6 +13,7 @@ interface IPointToTransform {
         lat: number;
         long: number;
     };
+    isSmallestBlock: boolean;
 }
 
 function perturbStreetGrid(
@@ -42,7 +43,9 @@ function perturbStreetGrid(
             // Increase this value to make street be perturbed less often.
             // 0 = always perturb; 1 = never perturb.
             // Range: [0, 1]
-            shouldPerturbThreshold = .5;
+            shouldPerturbThreshold = .3,
+
+            shouldPerturbThresholdForSmallestBlocks = .8;
 
         function getScalingFactor() {
             return pRNG() * 2 - 1;
@@ -88,10 +91,16 @@ function perturbStreetGrid(
                             };
 
                         if (previousPointToTransform) {
+                            // It's odd that this never fires.
                             logger.warn('Duplicate found');
                         }
 
-                        return pointsToTransform.concat([{point, transformation}]);
+                        return pointsToTransform.concat([{
+                            point,
+                            transformation,
+                            isSmallestBlock: this.parent.parent.node.properties.generationDebugging_reasonStopped
+                                === 'area below minimum block size'
+                        }]);
                     }
 
                     logger.debug({
@@ -103,16 +112,21 @@ function perturbStreetGrid(
 
                     return pointsToTransform;
             }, []),
+
             pointsToTransformSampled = _(pointsToTransform)
                 // We need to sort first so we are always filtering the same way.
                 .sortBy(({point}: IPointToTransform) => point[0])
                 .sortBy(({point}: IPointToTransform) => point[1])
-                .filter(() => pRNG() > shouldPerturbThreshold)
+                .filter(({isSmallestBlock}: IPointToTransform) => {
+                    const threshold =
+                        isSmallestBlock ? shouldPerturbThresholdForSmallestBlocks : shouldPerturbThreshold;
+                    return pRNG() > threshold;
+                })
                 .value();
 
         logger.debug({
             count: pointsToTransformSampled.length,
-            unsampledCount: pointsToTransform.length
+            unsampledCount: pointsToTransform.length,
         }, 'Found points to transform');
 
         assert(
