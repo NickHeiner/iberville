@@ -20,6 +20,11 @@ function perturbStreetGrid(
     featureCollection: GeoJSON.FeatureCollection
 ): GeoJSON.FeatureCollection {
 
+    if (!opts.streetGrid.perturb.enabled) {
+        logger.debug('Not perturbing street grid because enabled = false.');
+        return featureCollection;
+    }
+
     return logStep({step: 'perturbing street grid', featureLen: featureCollection.features.length}, () => {
         const pRNG = new Alea(opts.seed),
             // Start with a base amount to perturb by
@@ -44,6 +49,18 @@ function perturbStreetGrid(
         }
 
         const featureCollectionTraverse = traverse(featureCollection),
+
+            allPoints = featureCollectionTraverse.reduce(function(points: number[][], node: any): number[][] {
+                if (this.key === 'coordinates' && this.parent.node.type === 'Polygon') {
+                    return points.concat.apply(points, node);
+                }
+
+                return points;
+            }, []),
+
+            lats = _.map(allPoints, _.first),
+            longs = _.map(allPoints, _.last),
+
             pointsToTransform: IPointToTransform[] = featureCollectionTraverse
                 .reduce(function(pointsToTransform: IPointToTransform[], node: any): IPointToTransform[] {
                     if (this.key === 'coordinates'
@@ -78,6 +95,13 @@ function perturbStreetGrid(
                     return pointsToTransform;
             }, []);
 
+        logger.warn({
+            latCount: lats.length,
+            latUniqueCount: _.unique(lats).length,
+            longCount: longs.length,
+            longUniqueCount: _.unique(longs).length,
+        }, 'found uniques');
+
         logger.warn({count: pointsToTransform.length}, 'Found points to transform');
 
         return featureCollectionTraverse.map(function(node: any) {
@@ -85,7 +109,7 @@ function perturbStreetGrid(
                 _.find(pointsToTransform, ({point}: IPointToTransform) => _.isEqual(point, node));
 
             if (pointToTransform) {
-                logger.warn(pointToTransform, 'Transforming point');
+                logger.debug(pointToTransform, 'Transforming point');
                 this.update([
                     node[0] + pointToTransform.transformation.lat,
                     node[1] + pointToTransform.transformation.lat,

@@ -72,7 +72,11 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 noiseThresholdDistanceFromCenterCoefficient: 2.5,
 
                 minimumBlockSizeKilometers: 1,
-                maxBlockSizeKilometers: Infinity
+                maxBlockSizeKilometers: Infinity,
+
+                perturb: {
+                    enabled: true
+                }
             },
             removeIntersectingElements: true,
             seed: 'default-seed'
