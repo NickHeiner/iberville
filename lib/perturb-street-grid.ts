@@ -6,6 +6,15 @@ const traverse = require('traverse'),
     turfArea = require('turf-area'),
     _ = require('lodash');
 
+
+interface IPointToTransform {
+    point: number[];
+    transformation: {
+        lat: number;
+        long: number;
+    };
+}
+
 function perturbStreetGrid(
     opts: IGenerateCityOpts,
     featureCollection: GeoJSON.FeatureCollection
@@ -34,30 +43,53 @@ function perturbStreetGrid(
             return pRNG() * 2 - 1;
         }
 
-        return traverse(featureCollection).map(function(node: any) {
-            if (this.key === 'coordinates' && this.parent.node.type === 'Polygon' && pRNG() > shouldPerturbThreshold) {
-                logger.debug({
-                    node: node
-                }, 'Perturbing node');
+        const featureCollectionTraverse = traverse(featureCollection),
+            pointsToTransform: IPointToTransform[] = featureCollectionTraverse
+                .reduce(function(pointsToTransform: IPointToTransform[], node: any): IPointToTransform[] {
+                    if (this.key === 'coordinates'
+                        && this.parent.node.type === 'Polygon'
+                        && pRNG() > shouldPerturbThreshold) {
 
-                const polyArea = turfArea(this.parent.node),
-                    scaledPerturbAmounts = _.mapValues(
-                        perturbAmount,
-                        (amount: number) => amount * getScalingFactor() * polyArea * perturbAreaCoefficient
-                    ),
-                    coordsClone = <number[][][]> _.cloneDeep(node);
+                        logger.debug({
+                            node: node
+                        }, 'Adding node points to list of points to perturb');
 
-                coordsClone[0][1][0] += scaledPerturbAmounts.lat;
-                coordsClone[0][1][1] += scaledPerturbAmounts.long;
+                        const polyArea = turfArea(this.parent.node),
+                            scaledPerturbAmounts = _.mapValues(
+                                perturbAmount,
+                                (amount: number) => amount * getScalingFactor() * polyArea * perturbAreaCoefficient
+                            );
 
-                this.update(coordsClone);
-            } else {
-                logger.debug({
-                    node,
-                    self: {
-                        key: this.key, parentType: this.parent && this.parent.node.type
+                        // Always arbitrarily pick the 1st point for now.
+                        // We may want to pick randomly in the future.
+                        return pointsToTransform.concat([{
+                            point: node[0][1],
+                            transformation: scaledPerturbAmounts
+                        }]);
                     }
-                }, 'Skipping node');
+
+                    logger.debug({
+                        node,
+                        self: {
+                            key: this.key, parentType: this.parent && this.parent.node.type
+                        }
+                    }, 'Skipping node');
+
+                    return pointsToTransform;
+            }, []);
+
+        logger.warn({count: pointsToTransform.length}, 'Found points to transform');
+
+        return featureCollectionTraverse.map(function(node: any) {
+            const pointToTransform: IPointToTransform =
+                _.find(pointsToTransform, ({point}: IPointToTransform) => _.isEqual(point, node));
+
+            if (pointToTransform) {
+                logger.warn(pointToTransform, 'Transforming point');
+                this.update([
+                    node[0] + pointToTransform.transformation.lat,
+                    node[1] + pointToTransform.transformation.lat,
+                ]);
             }
         });
     });
