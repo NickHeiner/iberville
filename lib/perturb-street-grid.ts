@@ -4,8 +4,8 @@ import logStep = require('../util/logger/log-step');
 const traverse = require('traverse'),
     Alea = require('alea'),
     turfArea = require('turf-area'),
-    _ = require('lodash');
-
+    _ = require('lodash'),
+    assert = require('assert');
 
 interface IPointToTransform {
     point: number[];
@@ -49,23 +49,10 @@ function perturbStreetGrid(
         }
 
         const featureCollectionTraverse = traverse(featureCollection),
-
-            allPoints = featureCollectionTraverse.reduce(function(points: number[][], node: any): number[][] {
-                if (this.key === 'coordinates' && this.parent.node.type === 'Polygon') {
-                    return points.concat.apply(points, node);
-                }
-
-                return points;
-            }, []),
-
-            lats = _.map(allPoints, _.first),
-            longs = _.map(allPoints, _.last),
-
             pointsToTransform: IPointToTransform[] = featureCollectionTraverse
                 .reduce(function(pointsToTransform: IPointToTransform[], node: any): IPointToTransform[] {
                     if (this.key === 'coordinates'
-                        && this.parent.node.type === 'Polygon'
-                        && pRNG() > shouldPerturbThreshold) {
+                        && this.parent.node.type === 'Polygon') {
 
                         logger.debug({
                             node: node
@@ -75,14 +62,36 @@ function perturbStreetGrid(
                             scaledPerturbAmounts = _.mapValues(
                                 perturbAmount,
                                 (amount: number) => amount * getScalingFactor() * polyArea * perturbAreaCoefficient
-                            );
+                            ),
+                            // Always arbitrarily pick the 1st point for now.
+                            // We may want to pick randomly in the future.
+                            point = node[0][1],
+                            previousPointToTransform = _(pointsToTransform)
+                                .find(
+                                    (pointToTransform: IPointToTransform) => {
+                                        const isSamePoint = pointToTransform.point[0] === point[0] &&
+                                            pointToTransform.point[1] === point[1];
 
-                        // Always arbitrarily pick the 1st point for now.
-                        // We may want to pick randomly in the future.
-                        return pointsToTransform.concat([{
-                            point: node[0][1],
-                            transformation: scaledPerturbAmounts
-                        }]);
+                                        if (isSamePoint) {
+                                            logger.warn({point}, 'same point found');
+                                        }
+
+                                        return isSamePoint;
+                                    }
+                                ),
+                            previousTransform = previousPointToTransform ?
+                                previousPointToTransform.transform :
+                                {lat: Infinity, long: Infinity},
+                            transformation = {
+                                lat: Math.min(previousTransform.lat, scaledPerturbAmounts.lat),
+                                long: Math.min(previousTransform.long, scaledPerturbAmounts.long),
+                            };
+
+                        if (previousPointToTransform) {
+                            logger.warn('Duplicate found');
+                        }
+
+                        return pointsToTransform.concat([{point, transformation}]);
                     }
 
                     logger.debug({
@@ -93,26 +102,33 @@ function perturbStreetGrid(
                     }, 'Skipping node');
 
                     return pointsToTransform;
-            }, []);
+            }, []),
+            pointsToTransformSampled = _(pointsToTransform)
+                // We need to sort first so we are always filtering the same way.
+                .sortBy(({point}: IPointToTransform) => point[0])
+                .sortBy(({point}: IPointToTransform) => point[1])
+                .filter(() => pRNG() > shouldPerturbThreshold)
+                .value();
 
-        logger.warn({
-            latCount: lats.length,
-            latUniqueCount: _.unique(lats).length,
-            longCount: longs.length,
-            longUniqueCount: _.unique(longs).length,
-        }, 'found uniques');
+        logger.debug({
+            count: pointsToTransformSampled.length,
+            unsampledCount: pointsToTransform.length
+        }, 'Found points to transform');
 
-        logger.warn({count: pointsToTransform.length}, 'Found points to transform');
+        assert(
+            pointsToTransform.length >= pointsToTransformSampled.length,
+            'There should not be more sampled points than there were non-sampled points'
+        );
 
         return featureCollectionTraverse.map(function(node: any) {
             const pointToTransform: IPointToTransform =
-                _.find(pointsToTransform, ({point}: IPointToTransform) => _.isEqual(point, node));
+                _.find(pointsToTransformSampled, ({point}: IPointToTransform) => _.isEqual(point, node));
 
             if (pointToTransform) {
                 logger.debug(pointToTransform, 'Transforming point');
                 this.update([
                     node[0] + pointToTransform.transformation.lat,
-                    node[1] + pointToTransform.transformation.lat,
+                    node[1] + pointToTransform.transformation.long,
                 ]);
             }
         });
