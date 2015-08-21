@@ -75,6 +75,7 @@ function perturbStreetGrid(
 
                             points: IPointToTransform[] = _.map(pointsToPerturb, ((point: number[]) => {
                                 const previousPointToTransform: IPointToTransform = _(pointsToTransform)
+                                    // TODO can we use _.where for this?
                                     .find(
                                         (pointToTransform: IPointToTransform) =>
                                             _.isEqual(pointToTransform.point, point)
