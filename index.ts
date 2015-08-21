@@ -28,9 +28,12 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             },
             // TODO: Make this km so we can easily transpose the city around the world
             // and not need to tweak this value as well.
+            // TODO: Many of these values make sense at a specific scale, but if you
+            // change radius, they break. The values that break should be redefined
+            // to be in terms of the radius.
             radius: .004,
             river: {
-                enable: true,
+                enable: false,
                 voronoiPointCount: 1000,
                 debug: {
                     includeVoronoiPointsInOutput: false,
@@ -38,17 +41,17 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 }
             },
             lake: {
-                enable: true,
+                enable: false,
                 noiseResolution: {
                     distance: .007,
                     units: 'kilometers',
                 },
                 noiseCoordinatesCoefficient: 1500,
-                noiseLowerThresholdCoefficient: .5,
+                noiseLowerThresholdCoefficient: .3,
                 debug: {
-                    includeNoisePointsInOutput: true,
+                    includeNoisePointsInOutput: false,
                     includeLakePointsInOutput: false,
-                    omitLake: true
+                    omitLake: false
                 }
             },
             generateOsm: false,
@@ -64,11 +67,14 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 //      1 = noiseSubdivisionBaseThreshold * subdivisionLevel * noiseSubdivisionThresholdCoefficient
                 noiseSubdivisionBaseThreshold: .1,
                 noiseSubdivisionThresholdCoefficient: 1.2,
-                noiseThresholdDistanceFromCenterCoefficient: 7,
+
+                // Increasing this value makes blocks further away from the city center less likely to subdivide.
+                noiseThresholdDistanceFromCenterCoefficient: 2.5,
 
                 minimumBlockSizeKilometers: .1,
                 maxBlockSizeKilometers: 1
             },
+            removeIntersectingElements: true,
             seed: 'default-seed'
         },
         opts = _.merge({}, defaults, rawOpts),

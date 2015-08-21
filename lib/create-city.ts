@@ -19,7 +19,7 @@ function createCity(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     return logStep(
         {step: 'removing intersecting elements'},
-        () => removeIntersectingElements([lowestPriorityElements, highestPriorityElements])
+        () => removeIntersectingElements(opts, [lowestPriorityElements, highestPriorityElements])
     );
 }
 

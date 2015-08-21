@@ -42,6 +42,7 @@ interface IGenerateCityOpts {
         maxBlockSizeKilometers: number;
         noiseCoordinatesCoefficient: number;
     };
+    removeIntersectingElements: boolean;
 }
 
 interface ICreateCityOpts extends IGenerateCityOpts {
