@@ -18,14 +18,25 @@ function perturbStreetGrid(
             },
             shouldPerturbThreshold = 0;
 
+        function getScalingFactor() {
+            return pRNG() * 2 - 1;
+        }
+
         return traverse(featureCollection).map(function(node: any) {
             if (this.key === 'coordinates' && this.parent.node.type === 'Polygon' && pRNG() > shouldPerturbThreshold) {
                 logger.warn({
                     node: node
                 }, 'Perturbing node');
-                const coordsClone = <number[][][]> _.cloneDeep(node);
-                coordsClone[0][1][0] += perturbAmount.lat;
-                coordsClone[0][1][1] += perturbAmount.long;
+
+                const scaledPerturbAmounts = _.mapValues(
+                        perturbAmount,
+                        (amount: number) => amount * getScalingFactor()
+                    ),
+                    coordsClone = <number[][][]> _.cloneDeep(node);
+
+                coordsClone[0][1][0] += scaledPerturbAmounts.lat;
+                coordsClone[0][1][1] += scaledPerturbAmounts.long;
+
                 this.update(coordsClone);
             } else {
                 logger.debug({
