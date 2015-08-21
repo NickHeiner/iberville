@@ -1,5 +1,6 @@
 import logger = require('../util/logger/index');
 import logStep = require('../util/logger/log-step');
+import createPRNGUtils = require('./create-prng-utils');
 
 const traverse = require('traverse'),
     Alea = require('alea'),
@@ -28,6 +29,8 @@ function perturbStreetGrid(
 
     return logStep({step: 'perturbing street grid', featureLen: featureCollection.features.length}, () => {
         const pRNG = new Alea(opts.seed),
+            pRNGUtils = createPRNGUtils(pRNG),
+
             // Start with a base amount to perturb by
             perturbAmount = {
                 lat: .0005,
@@ -47,10 +50,6 @@ function perturbStreetGrid(
 
             shouldPerturbThresholdForSmallestBlocks = .8;
 
-        function getScalingFactor() {
-            return pRNG() * 2 - 1;
-        }
-
         const featureCollectionTraverse = traverse(featureCollection),
             pointsToTransform: IPointToTransform[] = featureCollectionTraverse
                 .reduce(function(pointsToTransform: IPointToTransform[], node: any): IPointToTransform[] {
@@ -64,43 +63,44 @@ function perturbStreetGrid(
                         const polyArea = turfArea(this.parent.node),
                             scaledPerturbAmounts = _.mapValues(
                                 perturbAmount,
-                                (amount: number) => amount * getScalingFactor() * polyArea * perturbAreaCoefficient
+                                (amount: number) => amount
+                                    * pRNGUtils.getScalingFactor()
+                                    * polyArea
+                                    * perturbAreaCoefficient
                             ),
-                            // Always arbitrarily pick the 1st point for now.
-                            // We may want to pick randomly in the future.
-                            point = node[0][1],
-                            previousPointToTransform = _(pointsToTransform)
-                                .find(
-                                    (pointToTransform: IPointToTransform) => {
-                                        const isSamePoint = pointToTransform.point[0] === point[0] &&
-                                            pointToTransform.point[1] === point[1];
 
-                                        if (isSamePoint) {
-                                            logger.warn({point}, 'same point found');
-                                        }
+                            // The first and last points of the poly have to be the same,
+                            // so let's just leave them alone.
+                            pointsToPerturb = node[0].slice(1, node[0].length - 1),
 
-                                        return isSamePoint;
-                                    }
-                                ),
-                            previousTransform = previousPointToTransform ?
-                                previousPointToTransform.transform :
-                                {lat: Infinity, long: Infinity},
-                            transformation = {
-                                lat: Math.min(previousTransform.lat, scaledPerturbAmounts.lat),
-                                long: Math.min(previousTransform.long, scaledPerturbAmounts.long),
-                            };
+                            points: IPointToTransform[] = _.map(pointsToPerturb, ((point: number[]) => {
+                                const previousPointToTransform: IPointToTransform = _(pointsToTransform)
+                                    .find(
+                                        (pointToTransform: IPointToTransform) =>
+                                            _.isEqual(pointToTransform.point, point)
+                                    ),
+                                previousTransform = previousPointToTransform ?
+                                    previousPointToTransform.transformation :
+                                    {lat: Infinity, long: Infinity};
 
-                        if (previousPointToTransform) {
-                            // It's odd that this never fires.
-                            logger.warn('Duplicate found');
-                        }
+                                logger.warn({previousTransform, previousPointToTransform});
 
-                        return pointsToTransform.concat([{
-                            point,
-                            transformation,
-                            isSmallestBlock: this.parent.parent.node.properties.generationDebugging_reasonStopped
-                                === 'area below minimum block size'
-                        }]);
+                                const transformation = {
+                                    lat: Math.min(previousTransform.lat, scaledPerturbAmounts.lat),
+                                    long: Math.min(previousTransform.long, scaledPerturbAmounts.long),
+                                };
+
+                                return {
+                                    point,
+                                    transformation,
+                                    isSmallestBlock: this.parent.parent
+                                        .node.properties
+                                        .generationDebugging_reasonStopped === 'area below minimum block size'
+                                };
+                            }));
+
+                        return pointsToTransform.concat(points);
+
                     }
 
                     logger.debug({
