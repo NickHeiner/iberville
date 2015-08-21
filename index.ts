@@ -71,8 +71,8 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 // Increasing this value makes blocks further away from the city center less likely to subdivide.
                 noiseThresholdDistanceFromCenterCoefficient: 2.5,
 
-                minimumBlockSizeKilometers: 1,
-                maxBlockSizeKilometers: Infinity,
+                minimumBlockSizeKilometers: .2,
+                maxBlockSizeKilometers: 4,
 
                 perturb: {
                     enabled: true
