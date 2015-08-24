@@ -10,13 +10,14 @@ const Alea = require('alea'),
 
 function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureCollection): GeoJSON.FeatureCollection {
     return logStep({featureLen: streetGrid.features.length, step: 'merging street blocks'}, () => {
-        const pRNG = new Alea(opts.seed),
-        pRNGUtils = createPRNGUtils(pRNG),
 
-        // Controls how often a merge occurs.
-        // 0 = always merge; 1 = never merge.
-        // Range: [0, 1]
-        mergeThreshold = 0;
+        if (!opts.streetGrid.mergeStreetBlocks.enabled) {
+            logger.debug('Skipping merging street blocks because opts.streetGrid.mergeStreetBlocks.enabled = false.');
+            return streetGrid;
+        }
+
+        const pRNG = new Alea(opts.seed),
+            pRNGUtils = createPRNGUtils(pRNG);
 
         function removeDeep<T>(list: T[], toRemove: T): T[] {
             return _.reject(list, (elem: T) => _.isEqual(elem, toRemove));
@@ -26,7 +27,7 @@ function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureC
             alreadyVisited: GeoJSON.Feature[],
             toVisit: GeoJSON.Feature[]
         ): GeoJSON.Feature[] {
-            
+
             if (!toVisit.length) {
                 return alreadyVisited;
             }
@@ -42,7 +43,7 @@ function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureC
             }
 
             const intersectingBlock = pRNGUtils.sampleFromList(intersectingBlocks),
-                shouldMerge = pRNG() > mergeThreshold,
+                shouldMerge = pRNG() > opts.streetGrid.mergeStreetBlocks.mergeThreshold,
                 newlyMergedBlock = shouldMerge ?
                     [turfMerge(turfFeatureCollection([considerMerging, intersectingBlock]))] :
                     [];

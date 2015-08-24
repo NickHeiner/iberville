@@ -76,6 +76,15 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
 
                 perturb: {
                     enabled: false
+                },
+
+                mergeStreetBlocks: {
+                    enabled: true,
+
+                    // Controls how often a merge occurs.
+                    // 0 = always merge; 1 = never merge.
+                    // Range: [0, 1]
+                    mergeThreshold: .5
                 }
             },
             removeIntersectingElements: true,
