@@ -56,6 +56,7 @@
     "turf-featurecollection": "^1.0.1",
     "turf-intersect": "^1.4.2",
     "turf-linestring": "^1.0.2",
+    "turf-merge": "^1.0.2",
     "turf-point": "^2.0.1",
     "turf-point-grid": "^2.0.0",
     "turf-polygon": "^1.0.3",

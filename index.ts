@@ -75,7 +75,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                 maxBlockSizeKilometers: 4,
 
                 perturb: {
-                    enabled: true
+                    enabled: false
                 }
             },
             removeIntersectingElements: true,

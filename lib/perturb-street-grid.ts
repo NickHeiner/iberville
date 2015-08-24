@@ -84,7 +84,7 @@ function perturbStreetGrid(
                                     previousPointToTransform.transformation :
                                     {lat: Infinity, long: Infinity};
 
-                                logger.warn({previousTransform, previousPointToTransform});
+                                logger.debug({previousTransform, previousPointToTransform});
 
                                 const transformation = {
                                     lat: Math.min(previousTransform.lat, scaledPerturbAmounts.lat),

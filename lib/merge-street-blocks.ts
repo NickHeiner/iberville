@@ -1,3 +1,5 @@
+import logger = require('../util/logger/index');
+import logStep = require('../util/logger/log-step');
 import createPRNGUtils = require('./create-prng-utils');
 
 const Alea = require('alea'),
@@ -7,30 +9,54 @@ const Alea = require('alea'),
     turfMerge = require('turf-merge');
 
 function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureCollection): GeoJSON.FeatureCollection {
-    const pRNG = new Alea(opts.seed),
+    return logStep({featureLen: streetGrid.features.length, step: 'merging street blocks'}, () => {
+        const pRNG = new Alea(opts.seed),
         pRNGUtils = createPRNGUtils(pRNG),
 
         // Controls how often a merge occurs.
         // 0 = always merge; 1 = never merge.
         // Range: [0, 1]
-        mergeThreshold = 0,
+        mergeThreshold = 0;
 
-        mergedFeatures: GeoJSON.Feature[] =
-            _.reduce(streetGrid, (merged: GeoJSON.Feature[], elBlock: GeoJSON.Feature, elIndex: number) => {
-                const intersectingBlocks: GeoJSON.Feature[] = _(streetGrid)
-                    .reject((ignored: any, index: number) => index === elIndex)
-                    .filter((block: GeoJSON.Feature) => turfIntersect(block, elBlock))
-                    .value(),
+        function removeDeep<T>(list: T[], toRemove: T): T[] {
+            return _.reject(list, (elem: T) => _.isEqual(elem, toRemove));
+        }
 
-                    intersectingBlock = pRNGUtils.sampleFromList(intersectingBlocks),
+        function mergeStreetBlocksRec(
+            alreadyVisited: GeoJSON.Feature[],
+            toVisit: GeoJSON.Feature[]
+        ): GeoJSON.Feature[] {
+            
+            if (!toVisit.length) {
+                return alreadyVisited;
+            }
 
-                    shouldMerge = pRNG() > mergeThreshold,
-                    newlyMergedBlocks = shouldMerge ? [turfMerge(elBlock, intersectingBlock)] : [];
+            const considerMerging = _.head(toVisit),
+                toVisitRest = _.tail(toVisit),
 
-                return merged.concat(newlyMergedBlocks);
-            }, []);
+                intersectingBlocks: GeoJSON.Feature[] =
+                    _.filter(toVisit, (block: GeoJSON.Feature) => turfIntersect(block, considerMerging));
 
-    return turfFeatureCollection(mergedFeatures);
+            if (!intersectingBlocks.length) {
+                return mergeStreetBlocksRec(alreadyVisited.concat([considerMerging]), toVisitRest);
+            }
+
+            const intersectingBlock = pRNGUtils.sampleFromList(intersectingBlocks),
+                shouldMerge = pRNG() > mergeThreshold,
+                newlyMergedBlock = shouldMerge ?
+                    [turfMerge(turfFeatureCollection([considerMerging, intersectingBlock]))] :
+                    [];
+
+            logger.debug({intersectingBlock, considerMerging}, 'Merging blocks');
+
+            return mergeStreetBlocksRec(
+                alreadyVisited.concat(newlyMergedBlock),
+                removeDeep(toVisitRest, intersectingBlock)
+            );
+        }
+
+        return turfFeatureCollection(mergeStreetBlocksRec([], streetGrid.features));
+    });
 }
 
 export = mergeStreetBlocks;
