@@ -10,7 +10,8 @@ const _ = require('lodash'),
     turfArea = require('turf-area'),
     turfFeatureCollection = require('turf-featurecollection'),
     turfDistance = require('turf-distance'),
-    turfCentroid = require('turf-centroid');
+    turfCentroid = require('turf-centroid'),
+    traverse = require('traverse');
 
 function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
@@ -106,7 +107,12 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             polySideLengthMeters = Math.sqrt(polyAreaMeters),
             polyRadiusMeters = polySideLengthMeters / 2,
             subdivided = turfSquareGrid(extent, polyRadiusMeters / 1000, 'kilometers'),
-            recursivelySubdividedFeatures = _(subdivided.features)
+            subdividedWithProperties = traverse(subdivided).map(function(node: any) {
+                if (this.key === 'properties') {
+                    this.update(_.merge({}, node, poly.properties), true);
+                }
+            }),
+            recursivelySubdividedFeatures = _(subdividedWithProperties.features)
                 .map(
                     (subdividedPoly: GeoJSON.Feature) =>
                         increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1).features

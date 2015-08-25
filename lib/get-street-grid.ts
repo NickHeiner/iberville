@@ -22,7 +22,11 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             opts.centerCoordinates.lat + opts.radius,
             opts.centerCoordinates.long + opts.radius,
         ],
-        grid = increaseGridDensity(turfBboxPolygon(extent), opts),
+        baseGridPoly = turfBboxPolygon(extent);
+
+    baseGridPoly.properties.streetBlock = true;
+
+    const grid = increaseGridDensity(baseGridPoly, opts),
         maxBlockSizeMeters = opts.streetGrid.maxBlockSizeKilometers * 1000,
         featuresWithoutLargeBlocks = _.reject(
             grid.features,
