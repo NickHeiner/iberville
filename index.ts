@@ -84,7 +84,7 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
                     // Controls how often a merge occurs.
                     // 0 = always merge; 1 = never merge.
                     // Range: [0, 1]
-                    mergeThreshold: 0
+                    mergeThreshold: .5
                 }
             },
             removeIntersectingElements: true,
