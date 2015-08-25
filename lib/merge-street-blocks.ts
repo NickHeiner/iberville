@@ -34,7 +34,7 @@ function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureC
                 toVisitRest = _.tail(toVisit),
 
                 intersectingBlock: GeoJSON.Feature =
-                    _.first(toVisit, (block: GeoJSON.Feature) => turfIntersect(block, considerMerging));
+                    _.first(toVisitRest, (block: GeoJSON.Feature) => turfIntersect(block, considerMerging));
 
             if (!intersectingBlock) {
                 return mergeStreetBlocksRec(alreadyVisited.concat([considerMerging]), toVisitRest);
