@@ -83,8 +83,10 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
 
                     // Controls how often a merge occurs.
                     // 0 = always merge; 1 = never merge.
+                    // If there are two blocks next to each other, they have two chances to merge,
+                    // so you'll see a lot of merged blocks unless this value is relatively high.
                     // Range: [0, 1]
-                    mergeThreshold: .5
+                    mergeThreshold: .75
                 }
             },
             removeIntersectingElements: true,
