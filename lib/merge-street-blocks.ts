@@ -41,14 +41,15 @@ function mergeStreetBlocks(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureC
             }
 
             const shouldMerge = pRNG() > opts.streetGrid.mergeStreetBlocks.mergeThreshold,
-                newlyMergedBlock = shouldMerge ?
-                    [turfMerge(turfFeatureCollection([considerMerging, intersectingBlock]))] :
-                    [];
+                mergedBlock = turfMerge(turfFeatureCollection([considerMerging, intersectingBlock])),
+                visitedBlock = shouldMerge ? mergedBlock : considerMerging;
 
-            logger.debug({intersectingBlock, considerMerging}, 'Merging blocks');
+            mergedBlock.properties.merged = true;
+
+            logger.debug({intersectingBlock, considerMerging}, 'Considering merging blocks');
 
             return mergeStreetBlocksRec(
-                alreadyVisited.concat(newlyMergedBlock),
+                alreadyVisited.concat([visitedBlock]),
                 removeDeep(toVisitRest, intersectingBlock)
             );
         }
