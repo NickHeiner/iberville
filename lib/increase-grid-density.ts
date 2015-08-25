@@ -14,7 +14,7 @@ const _ = require('lodash'),
     traverse = require('traverse'),
     shortid = require('shortid');
 
-function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
         simplexNoiseGenerator = new simplexNoise(pseudoRandomNumberGenerator);
 
