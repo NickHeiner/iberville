@@ -2,6 +2,7 @@ import '../types';
 import logger = require('../util/logger/index');
 import increaseGridDensity = require('./increase-grid-density');
 import mergeStreetBlocks = require('./merge-street-blocks');
+import perturbStreetGrid = require('./perturb-street-grid');
 
 const turfBboxPolygon = require('turf-bbox-polygon'),
     turfArea = require('turf-area'),
@@ -41,7 +42,7 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
     grid.features = featuresWithoutLargeBlocks;
 
-    return mergeStreetBlocks(opts, grid);
+    return perturbStreetGrid(opts, mergeStreetBlocks(opts, grid));
 }
 
 export = getStreetGrid;
