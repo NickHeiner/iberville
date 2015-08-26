@@ -42,15 +42,26 @@ tape('increaseGridDensity', function(t: IT) {
                 return points;
             }, []),
             uniquePoints = _.reduce(points, (allPoints: number[][], point: number[]) => {
-                const pointAlreadyExists = _.any(
-                    allPoints,
-                    (alreadySeenPoint: number[]) => _.isEqual(point, alreadySeenPoint)
-                );
-                return pointAlreadyExists ? allPoints : allPoints.concat([point]);
-            }, []);
+                    const pointAlreadyExists = _.any(
+                        allPoints,
+                        (alreadySeenPoint: number[]) => _.isEqual(point, alreadySeenPoint)
+                    );
+                    return pointAlreadyExists ? allPoints : allPoints.concat([point]);
+                }, []),
+            sortedPoints = _.sortByAll(uniquePoints, (point: number[]) => point[0], (point: number[]) => point[1]);
 
-        logger.debug({points, uniquePoints}, 'found unique points');
+        logger.debug({points, sortedPoints}, 'found unique points');
 
-        t.equal(uniquePoints.length, 9, 'the whole grid has 9 unique points');
+        t.deepEqual(sortedPoints, [
+            [-1, -1],
+            [-1, 0],
+            [-1, 1],
+            [0, -1],
+            [0, 0],
+            [0, 1],
+            [1, -1],
+            [1, 0],
+            [1, 1],
+        ], 'the unique points in the grid are generated correctly');
     });
 });
