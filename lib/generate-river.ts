@@ -1,6 +1,7 @@
 import '../types';
 import logger = require('../util/logger/index');
 import generateVoronoi = require('./generate-voronoi');
+import createPRNGUtils = require('./create-prng-utils');
 
 const turfLineString = require('turf-linestring'),
     Alea = require('alea'),
@@ -13,15 +14,8 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.Feature[] {
     }
 
     // TODO consider factoring creation of pRNG out so it is consistent.
-    const pRNG = new Alea(opts.seed);
-
-    function sampleFromList<T>(list: T[]): T {
-        const randomIndex = Math.floor(pRNG() * list.length),
-            listClone = _.cloneDeep(list),
-            sampledElement = _.pullAt(listClone, randomIndex)[0];
-
-        return sampledElement;
-    }
+    const pRNG = new Alea(opts.seed),
+        pRNGUtils = createPRNGUtils(pRNG);
 
     function generateRiverRec(
         currLine: GeoJSON.Feature,
@@ -42,7 +36,7 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.Feature[] {
             return [];
         }
 
-        const nextLine = sampleFromList(potentialNextLines),
+        const nextLine = pRNGUtils.sampleFromList(potentialNextLines),
             remainingLines = _.without(potentialRiverEdges, nextLine),
             nextLineClone = _.cloneDeep(nextLine);
 
@@ -59,7 +53,7 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.Feature[] {
             (feature: GeoJSON.Feature) => feature.properties.firstCoordTouchesPerimeter
         ),
 
-        chosenStartPoint = sampleFromList(potentialStartLines);
+        chosenStartPoint = pRNGUtils.sampleFromList(potentialStartLines);
 
     logger.debug({chosenStartPoint}, 'Found potential start lines');
 

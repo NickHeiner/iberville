@@ -4,7 +4,14 @@ const turfFeatureCollection = require('turf-featurecollection'),
     turfIntersect = require('turf-intersect'),
     _ = require('lodash');
 
-function removeIntersectingElements(elements: GeoJSON.FeatureCollection[]): GeoJSON.FeatureCollection {
+function removeIntersectingElements(
+    opts: IGenerateCityOpts,
+    elements: GeoJSON.FeatureCollection[]
+): GeoJSON.FeatureCollection {
+
+    if (!opts.removeIntersectingElements) {
+        logger.debug('Skipping removing intersecting elements because opts.removeIntersectingElements == false');
+    }
 
     const features = _(elements)
         .map((featureCollection: GeoJSON.FeatureCollection, index: number, elements: GeoJSON.FeatureCollection[]) => {

@@ -1,4 +1,5 @@
 import logger = require('../util/logger/index');
+import subdivideSquare = require('./subdivide-square');
 
 const _ = require('lodash'),
     alea = require('alea'),
@@ -6,13 +7,13 @@ const _ = require('lodash'),
     turfExtent = require('turf-extent'),
     turfPointGrid = require('turf-point-grid'),
     turfPoint = require('turf-point'),
-    turfSquareGrid = require('turf-square-grid'),
     turfArea = require('turf-area'),
     turfFeatureCollection = require('turf-featurecollection'),
     turfDistance = require('turf-distance'),
-    turfCentroid = require('turf-centroid');
+    turfCentroid = require('turf-centroid'),
+    shortid = require('shortid');
 
-function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
+function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
         simplexNoiseGenerator = new simplexNoise(pseudoRandomNumberGenerator);
 
@@ -101,12 +102,8 @@ function increaseGridDensity(basePoly: GeoJSON.Feature, opts: IGenerateCityOpts)
             return unsubdividedPoly;
         }
 
-        const polyAreaMeters = turfArea(poly),
-            // This assumes that the poly is a square.
-            polySideLengthMeters = Math.sqrt(polyAreaMeters),
-            polyRadiusMeters = polySideLengthMeters / 2,
-            subdivided = turfSquareGrid(extent, polyRadiusMeters / 1000, 'kilometers'),
-            recursivelySubdividedFeatures = _(subdivided.features)
+        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate()})),
+            recursivelySubdividedFeatures = _(subdivided)
                 .map(
                     (subdividedPoly: GeoJSON.Feature) =>
                         increaseGridDensityRec(subdividedPoly, subdivisionLevel + 1).features

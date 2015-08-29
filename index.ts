@@ -2,6 +2,7 @@
 
 import createCity = require('./lib/create-city');
 import logger = require('./util/logger/index');
+import defaultOpts = require('./lib/default-opts');
 
 import './types';
 
@@ -20,58 +21,8 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    // Show how tweaking all these values changes the output.
-    const defaults: IGenerateCityOpts = {
-            centerCoordinates: {
-                lat: 0,
-                long: 0
-            },
-            // TODO: Make this km so we can easily transpose the city around the world
-            // and not need to tweak this value as well.
-            radius: .0015,
-            river: {
-                enable: false,
-                voronoiPointCount: 1000,
-                debug: {
-                    includeVoronoiPointsInOutput: false,
-                    includeVoronoiLinesInOutput: false
-                }
-            },
-            lake: {
-                enable: true,
-                noiseResolution: {
-                    distance: .007,
-                    units: 'kilometers',
-                },
-                noiseCoordinatesCoefficient: 1500,
-                noiseLowerThresholdCoefficient: .5,
-                debug: {
-                    includeNoisePointsInOutput: true,
-                    includeLakePointsInOutput: false,
-                    omitLake: true
-                }
-            },
-            generateOsm: false,
-            streetGrid: {
-                enable: false,
-                noiseResolution: {
-                    distance: .1,
-                    units: 'kilometers'
-                },
-                noiseCoordinatesCoefficient: 1000,
-
-                // The noise is contained to [0, 1], so the max level of subdivision we can have is given by:
-                //      1 = noiseSubdivisionBaseThreshold * subdivisionLevel * noiseSubdivisionThresholdCoefficient
-                noiseSubdivisionBaseThreshold: .1,
-                noiseSubdivisionThresholdCoefficient: 1.2,
-                noiseThresholdDistanceFromCenterCoefficient: 7,
-
-                minimumBlockSizeKilometers: .1,
-                maxBlockSizeKilometers: 1
-            },
-            seed: 'default-seed'
-        },
-        opts = _.merge({}, defaults, rawOpts),
+    // TODO Show how tweaking all these values changes the output.
+    const opts = _.merge({}, defaultOpts, rawOpts),
         geoJson = createCity(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson),
         geoJsonHash = md5(JSON.stringify(geoJson));

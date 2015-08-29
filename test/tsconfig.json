@@ -6,6 +6,8 @@
     "noEmitOnError": true
   },
   "files": [
-    "unit/l-system.ts"
+    "unit/l-system.ts",
+    "unit/increase-grid-density.ts",
+    "unit/subdivide-square.ts"
   ]
 }

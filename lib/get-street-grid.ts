@@ -1,6 +1,8 @@
 import '../types';
 import logger = require('../util/logger/index');
 import increaseGridDensity = require('./increase-grid-density');
+import mergeStreetBlocks = require('./merge-street-blocks');
+import perturbStreetGrid = require('./perturb-street-grid');
 
 const turfBboxPolygon = require('turf-bbox-polygon'),
     turfArea = require('turf-area'),
@@ -20,10 +22,19 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
             opts.centerCoordinates.lat + opts.radius,
             opts.centerCoordinates.long + opts.radius,
         ],
-        grid = increaseGridDensity(turfBboxPolygon(extent), opts),
-        maxBlockSizeMeters = opts.streetGrid.maxBlockSizeKilometers * 1000,
-        featuresWithoutLargeBlocks = _.reject(
-            grid.features,
+        baseGridPoly = turfBboxPolygon(extent);
+
+    baseGridPoly.properties.streetBlock = true;
+
+    // This could be extracted into its own file.
+    function removeLargeBlocks(
+        opts: IGenerateCityOpts,
+        streetGrid: GeoJSON.FeatureCollection
+    ): GeoJSON.FeatureCollection {
+
+        const maxBlockSizeMeters = opts.streetGrid.maxBlockSizeKilometers * 1000;
+        return turfFeatureCollection(_.reject(
+            streetGrid.features,
             (feature: GeoJSON.Feature) => {
                 const areaMeters = turfArea(feature),
                     isBlockTooBig = areaMeters > maxBlockSizeMeters;
@@ -36,11 +47,15 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
 
                 return isBlockTooBig;
             }
-        );
+        ));
+    }
 
-    grid.features = featuresWithoutLargeBlocks;
-
-    return grid;
+    return _.flow(
+        _.partial(increaseGridDensity, opts),
+        _.partial(removeLargeBlocks, opts),
+        _.partial(mergeStreetBlocks, opts),
+        _.partial(perturbStreetGrid, opts)
+    )(baseGridPoly);
 }
 
 export = getStreetGrid;

@@ -41,7 +41,15 @@ interface IGenerateCityOpts {
         minimumBlockSizeKilometers: number;
         maxBlockSizeKilometers: number;
         noiseCoordinatesCoefficient: number;
+        perturb: {
+            enabled: boolean;
+        };
+        mergeStreetBlocks: {
+            enabled: boolean;
+            mergeThreshold: number;
+        }
     };
+    removeIntersectingElements: boolean;
 }
 
 interface ICreateCityOpts extends IGenerateCityOpts {
