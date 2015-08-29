@@ -50,7 +50,7 @@ tape('increaseGridDensity', function(t: IT) {
                 }, []),
             sortedPoints = _.sortByAll(uniquePoints, (point: number[]) => point[0], (point: number[]) => point[1]);
 
-        logger.debug({points, sortedPoints}, 'found unique points');
+        logger.debug({points, uniquePoints, sortedPoints, streetGrid}, 'found unique points');
 
         t.deepEqual(sortedPoints, [
             [-1, -1],
@@ -62,6 +62,6 @@ tape('increaseGridDensity', function(t: IT) {
             [1, -1],
             [1, 0],
             [1, 1],
-        ], 'the unique points in the grid are generated correctly');
+        ], 'the unique points in the grid are generated correctly   ');
     });
 });
