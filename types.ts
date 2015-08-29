@@ -43,6 +43,13 @@ interface IGenerateCityOpts {
         noiseCoordinatesCoefficient: number;
         perturb: {
             enabled: boolean;
+            base: {
+                lat: number;
+                long: number;
+            };
+            perturbAreaCoefficient: number;
+            shouldPerturbThreshold: number;
+            shouldPerturbThresholdForSmallestBlocks: number;
         };
         mergeStreetBlocks: {
             enabled: boolean;

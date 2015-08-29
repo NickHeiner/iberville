@@ -31,26 +31,7 @@ function perturbStreetGrid(
         const pRNG = new Alea(opts.seed),
             pRNGUtils = createPRNGUtils(pRNG),
 
-            // Start with a base amount to perturb by
-            perturbAmount = {
-                lat: .0005,
-                long: 0
-            },
-
-            // We want the perturbation amount to be relative to the overall size.
-            // This makes it look more realistic. If we try to do a one-size-fits-all
-            // approach, then the largest polys may be only trivially perturbed
-            // relative to their size, and the smallest polys may be totally distorted.
-            perturbAreaCoefficient = .00012,
-
-            // Increase this value to make street be perturbed less often.
-            // 0 = always perturb; 1 = never perturb.
-            // Range: [0, 1]
-            shouldPerturbThreshold = .3,
-
-            shouldPerturbThresholdForSmallestBlocks = .8;
-
-        const featureCollectionTraverse = traverse(featureCollection),
+            featureCollectionTraverse = traverse(featureCollection),
             pointsToTransform: IPointToTransform[] = featureCollectionTraverse
                 .reduce(function(pointsToTransform: IPointToTransform[], node: any): IPointToTransform[] {
                     if (this.key === 'coordinates'
@@ -62,11 +43,11 @@ function perturbStreetGrid(
 
                         const polyArea = turfArea(this.parent.node),
                             scaledPerturbAmounts = _.mapValues(
-                                perturbAmount,
+                                opts.streetGrid.perturb.base,
                                 (amount: number) => amount
                                     * pRNGUtils.getScalingFactor()
                                     * polyArea
-                                    * perturbAreaCoefficient
+                                    * opts.streetGrid.perturb.perturbAreaCoefficient
                             ),
 
                             // The first and last points of the poly have to be the same,
@@ -120,7 +101,9 @@ function perturbStreetGrid(
                 .sortBy(({point}: IPointToTransform) => point[1])
                 .filter(({isSmallestBlock}: IPointToTransform) => {
                     const threshold =
-                        isSmallestBlock ? shouldPerturbThresholdForSmallestBlocks : shouldPerturbThreshold;
+                        isSmallestBlock ?
+                            opts.streetGrid.perturb.shouldPerturbThresholdForSmallestBlocks :
+                            opts.streetGrid.perturb.shouldPerturbThreshold;
                     return pRNG() > threshold;
                 })
                 .value();
