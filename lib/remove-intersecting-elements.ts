@@ -11,6 +11,7 @@ function removeIntersectingElements(
 
     if (!opts.removeIntersectingElements) {
         logger.debug('Skipping removing intersecting elements because opts.removeIntersectingElements == false');
+        return turfFeatureCollection(_(elements).map('features').flatten().value());
     }
 
     const features = _(elements)

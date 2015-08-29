@@ -10,7 +10,7 @@ const defaults: IGenerateCityOpts = {
         // to be in terms of the radius.
         radius: .004,
         river: {
-            enable: false,
+            enable: true,
             voronoiPointCount: 1000,
             debug: {
                 includeVoronoiPointsInOutput: false,
@@ -18,7 +18,7 @@ const defaults: IGenerateCityOpts = {
             }
         },
         lake: {
-            enable: false,
+            enable: true,
             noiseResolution: {
                 distance: .007,
                 units: 'kilometers',
@@ -66,7 +66,7 @@ const defaults: IGenerateCityOpts = {
                 mergeThreshold: .75
             }
         },
-        removeIntersectingElements: true,
+        removeIntersectingElements: false,
         seed: 'default-seed'
     };
 
