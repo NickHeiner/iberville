@@ -66,7 +66,7 @@ const defaults: IGenerateCityOpts = {
                 mergeThreshold: .75
             }
         },
-        removeIntersectingElements: false,
+        removeIntersectingElements: true,
         seed: 'default-seed'
     };
 

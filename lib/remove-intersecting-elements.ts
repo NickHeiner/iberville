@@ -28,7 +28,15 @@ function removeIntersectingElements(
                 (feature: GeoJSON.Feature) =>
                     _.any(
                         higherPriorityFeatures,
-                        (higherPriorityFeature: GeoJSON.Feature) => turfIntersect(higherPriorityFeature, feature)
+                        (higherPriorityFeature: GeoJSON.Feature) => {
+                            try {
+                                return turfIntersect(higherPriorityFeature, feature);
+                            } catch (e) {
+                                // *le sigh* https://github.com/Turfjs/turf-intersect/issues/11
+                                logger.debug(e, 'Caught error on turf-intersect');
+                                return false;
+                            }
+                        }
                     )
             );
         })
