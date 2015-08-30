@@ -14,8 +14,23 @@ Map { background-color: white; }
     line-color: @water;
     line-width: 5;
     [zoom>=16] { line-width: @baseRiverLineWidth/4; }
-    [zoom>=17] { line-width: @baseRiverLineWidth/2; }
+    [zoom>=17] { 
+      line-width: @baseRiverLineWidth/2; 
+      text-size: @baseTextSize/4;
+    }
     line-cap: round;    
+    
+    text-name: "'The River'";
+    text-face-name: @sans_italic;
+    text-fill: #036;
+    text-size: 20;
+    text-dy: 1;
+    text-max-char-angle-delta: 15;
+    text-halo-fill: fadeout(white, 30%);
+    text-halo-radius: 2.5;
+    
+    [zoom=19] { text-size: @baseTextSize; }
+    [zoom=18] { text-size: @baseTextSize/2; }
   }
   
   [lake=1] {
@@ -28,11 +43,14 @@ Map { background-color: white; }
       line-width: @baseRiverLineWidth/2; 
       
       text-name: "'Lake Unknown'";
+      text-placement: interior;
       text-face-name: @sans_italic;
       text-fill: darken(@water, 40%);
       text-size: @baseTextSize/4;
       text-wrap-width: 100;
       text-wrap-before: true;
+      text-halo-fill: fadeout(white, 30%);
+      text-halo-radius: 2.5;
     }
     [zoom=19] { text-size: @baseTextSize; }
     [zoom=18] { text-size: @baseTextSize/2; }
