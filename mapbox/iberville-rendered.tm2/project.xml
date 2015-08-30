@@ -9,14 +9,18 @@
   <Parameter name="format">png8:m=h</Parameter>
   <Parameter name="maxzoom">22</Parameter>
   <Parameter name="minzoom">0</Parameter>
+  <Parameter name="name"><![CDATA[Iberville Map Style]]></Parameter>
   <Parameter name="source"><![CDATA[mapbox:///nth.c5ad5b71]]></Parameter>
 </Parameters>
 
 
 <Style name="iberville-generated" filter-mode="first">
   <Rule>
-    <LineSymbolizer stroke-linejoin="round" stroke="#ff0000" stroke-width="1.4" />
-    <TextSymbolizer fill="#0000ff" face-name="Open Sans Regular" ><![CDATA[[merged]]]></TextSymbolizer>
+    <Filter>([river] = 1)</Filter>
+    <LineSymbolizer stroke="#c3e6ff" stroke-linejoin="round" stroke-width="1.4" />
+  </Rule>
+  <Rule>
+    <LineSymbolizer stroke-linejoin="round" stroke-width="1.4" />
   </Rule>
 </Style>
 <Layer name="iberville-generated"

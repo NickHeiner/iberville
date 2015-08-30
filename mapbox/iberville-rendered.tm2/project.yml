@@ -19,7 +19,7 @@ interactivity_layer: ''
 layers: null
 maxzoom: 22
 minzoom: 0
-name: ''
+name: Iberville Map Style
 source: "mapbox:///nth.c5ad5b71"
 styles: 
   - style.mss

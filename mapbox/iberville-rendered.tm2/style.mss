@@ -1,3 +1,5 @@
+#none {
+
 // Languages: name (local), name_en, name_fr, name_es, name_de
 @name: '[name_en]';
 
@@ -146,4 +148,6 @@ Map { background-color: @land; }
     }
     [class='street_limited'] { line-dasharray: 4,1; }
   }
+}
+
 }
