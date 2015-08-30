@@ -2,6 +2,7 @@ Map { background-color: white; }
 
 @water: #c3e6ff;
 @baseRiverLineWidth: 5;
+@baseTextSize: 30;
 @sans: 'Source Sans Pro Regular';
 @sans_italic: 'Source Sans Pro Italic';
 
@@ -20,7 +21,7 @@ Map { background-color: white; }
   [lake=1] {
     polygon-fill: @water;
     polygon-gamma: .6;
-    line-color: darken(@water, 50%);
+    line-color: darken(@water, 20%);
     line-width: 5;
     [zoom>=16] { line-width: @baseRiverLineWidth/4; }
     [zoom>=17] { 
@@ -28,11 +29,13 @@ Map { background-color: white; }
       
       text-name: "'Lake Unknown'";
       text-face-name: @sans_italic;
-      text-fill: darken(@water, 30%);
-      text-size: 30;
+      text-fill: darken(@water, 40%);
+      text-size: @baseTextSize/4;
       text-wrap-width: 100;
       text-wrap-before: true;
     }
+    [zoom=19] { text-size: @baseTextSize; }
+    [zoom=18] { text-size: @baseTextSize/2; }
   }
 }
 
