@@ -5,7 +5,7 @@
 <Parameters>
   <Parameter name="attribution"><![CDATA[<a href='https://www.mapbox.com/about/maps/' target='_blank'>&copy; Mapbox &copy; OpenStreetMap</a> <a class='mapbox-improve-map' href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a>]]></Parameter>
   <Parameter name="bounds">-180,-85.0511,180,85.0511</Parameter>
-  <Parameter name="center">0,0.001,17</Parameter>
+  <Parameter name="center">0.0008,-0.0005,19</Parameter>
   <Parameter name="format">png8:m=h</Parameter>
   <Parameter name="maxzoom">22</Parameter>
   <Parameter name="minzoom">0</Parameter>
@@ -16,8 +16,60 @@
 
 <Style name="iberville-generated" filter-mode="first">
   <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#0072c3" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#2aa6ff" size="30" wrap-width="100" wrap-before="true" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#0072c3" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1)</Filter>
+    <LineSymbolizer stroke="#0072c3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#0072c3" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#2aa6ff" size="30" wrap-width="100" wrap-before="true" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#0072c3" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1)</Filter>
+    <LineSymbolizer stroke="#0072c3" stroke-width="5" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#c3e6ff" gamma="0.6" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
     <Filter>([river] = 1)</Filter>
-    <LineSymbolizer stroke="#c3e6ff" stroke-linejoin="round" stroke-width="1.4" />
+    <LineSymbolizer stroke-width="2.5" stroke="#c3e6ff" stroke-linecap="round" stroke-linejoin="round" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([river] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#c3e6ff" stroke-linecap="round" stroke-linejoin="round" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([river] = 1)</Filter>
+    <LineSymbolizer stroke="#c3e6ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
   </Rule>
   <Rule>
     <LineSymbolizer stroke-linejoin="round" stroke-width="1.4" />

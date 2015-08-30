@@ -2,7 +2,7 @@ _prefs:
   disabled: []
   inspector: false
   mapid: nth.c5ad5b71
-  rev: s-3de9b01c
+  rev: s-cd45e0c3
   saveCenter: true
 attribution: Nick Heiner
 center: 
@@ -23,6 +23,7 @@ Layer:
       generationDebugging_polyAreaKm: Number
       generationDebugging_reasonStopped: String
       generationDebugging_threshold: Number
+      lake: 1 if the element is a lake; 0 otherwise
       merged: Number
       river: 1 if the element is a river; 0 otherwise
     properties: 
