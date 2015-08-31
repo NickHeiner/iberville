@@ -13,7 +13,7 @@
   
   [cityBlock=1] {
     line-color: @street;
-    polygon-fill: #e9e6eb;
+//    polygon-fill: #e9e6eb;
     
     [areaSqM>2000] {
       ::case {
@@ -23,6 +23,11 @@
         [zoom>=15] { line-width:@motorwayLineWidth - 2; }
         [zoom>=16] { line-width:@motorwayLineWidth; }
       }
+      
+      polygon-fill: blue;
+      text-name: [id];
+      text-face-name: @sans;
+      text-size: 20;
       
       ::fill {
         line-join:round;
@@ -41,6 +46,11 @@
         [zoom>=15] { line-width:@mainLineWidth - 2; }
         [zoom>=16] { line-width:@mainLineWidth; }
       }
+      
+      polygon-fill: red;
+      text-name: [id];
+      text-face-name: @sans;
+      text-size: 20;
       
       ::fill {
          line-join:round;
