@@ -6,6 +6,7 @@
 @motorwayLineWidth: 5;
 @mainLineWidth:     @motorwayLineWidth - 1;
 @sans:              'Source Sans Pro Regular';
+@idTextSize:        0;
 
 #iberville-generated {
   line-join: round;
@@ -13,7 +14,12 @@
   
   [cityBlock=1] {
     line-color: @street;
-//    polygon-fill: #e9e6eb;
+    polygon-fill: #e9e6eb;
+    
+    text-name: [id];
+    text-face-name: @sans;
+    text-size: @idTextSize;
+    text-placement: interior;
     
     [areaSqM>2000] {
       ::case {
@@ -23,11 +29,6 @@
         [zoom>=15] { line-width:@motorwayLineWidth - 2; }
         [zoom>=16] { line-width:@motorwayLineWidth; }
       }
-      
-      polygon-fill: blue;
-      text-name: [id];
-      text-face-name: @sans;
-      text-size: 20;
       
       ::fill {
         line-join:round;
@@ -46,11 +47,6 @@
         [zoom>=15] { line-width:@mainLineWidth - 2; }
         [zoom>=16] { line-width:@mainLineWidth; }
       }
-      
-      polygon-fill: red;
-      text-name: [id];
-      text-face-name: @sans;
-      text-size: 20;
       
       ::fill {
          line-join:round;
