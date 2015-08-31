@@ -85,7 +85,7 @@ function perturbStreetGrid(
 
                     }
 
-                    logger.debug({
+                    logger.trace({
                         node,
                         self: {
                             key: this.key, parentType: this.parent && this.parent.node.type

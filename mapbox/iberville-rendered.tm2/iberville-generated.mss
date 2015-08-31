@@ -10,12 +10,19 @@ Map { background-color: #fdeca4; }
   line-join: round;
   line-width: 1.4;
   
-  [generationDebugging_reasonStopped!=""] {
-  }
   
   [cityBlock=1] {
     line-color: #d4eecc;
     polygon-fill: #e1c4f1;
+  }
+  
+  
+  [generationDebugging_polyAreaKm!=""] {
+    text-name: [generationDebugging_polyAreaKm];
+    text-face-name: @sans_italic;
+    text-fill: #036;
+    text-size: 20;
+    text-placement: interior;
   }
   
   [river=1] {

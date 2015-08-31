@@ -12,7 +12,7 @@
   },
   "scripts": {
     "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts test/**/*.ts && tsc -p . && tsc -p test",
-    "test": "TAP=1 loglevel=debug tape test/**/*.js | tap-difflet",
+    "test": "TAP=1 loglevel=debug tape test/**/get-street-grid.js | tap-difflet",
     "prepublish": "tsd reinstall",
     "start": "./bin/iberville.js --out generated"
   },
