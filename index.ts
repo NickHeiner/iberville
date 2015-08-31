@@ -22,7 +22,19 @@ interface IGeoJsonFormatError extends Error {
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     // TODO Show how tweaking all these values changes the output.
-    const opts = _.merge({}, defaultOpts, rawOpts),
+    const opts = _.merge({}, defaultOpts, rawOpts, {
+            lake: {enable: false},
+            river: {enable: false},
+            removeIntersectingElements: false,
+            streetGrid: {
+                minimumBlockSizeKilometers: .3,
+                maxBlockSizeKilometers: Infinity,
+                noiseSubdivisionBaseThreshold: .1,
+
+                perturb: {enabled: false},
+                mergeStreetBlocks: {enabled: false}
+            }
+        }),
         geoJson = createCity(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson),
         geoJsonHash = md5(JSON.stringify(geoJson));
