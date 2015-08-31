@@ -5,6 +5,7 @@
 
 @motorwayLineWidth: 5;
 @mainLineWidth:     @motorwayLineWidth - 1;
+@streetLineWidth:   @mainLineWidth - 2.5;
 @sans:              'Source Sans Pro Regular';
 @idTextSize:        0;
 
@@ -54,6 +55,24 @@
          line-color:@main;
          [zoom>=15] { line-width:@mainLineWidth - 4; }
          [zoom>=16] { line-width:@mainLineWidth - 2; }
+      }
+    }
+    
+    [areaSqM<800] {
+      ::case {
+        line-join: round;
+        line-cap: round;
+        line-color: @land * 0.8;
+        [zoom>=15] { line-width: @streetLineWidth - 1.5; }
+        [zoom>=16] { line-width: @streetLineWidth; }
+      }
+      
+      ::fill {
+        line-join: round;
+        line-cap: round;
+        line-color: @street;
+        [zoom>=15] { line-width: @streetLineWidth - 2.5 - 1.5; }
+        [zoom>=16] { line-width: @streetLineWidth - 2.5; }
       }
     }
   }
