@@ -27,9 +27,9 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
             river: {enable: false},
             removeIntersectingElements: false,
             streetGrid: {
-                minimumBlockSizeKilometers: .3,
+                minimumBlockSizeKilometers: .6,
                 maxBlockSizeKilometers: Infinity,
-                noiseSubdivisionBaseThreshold: .1,
+                noiseSubdivisionBaseThreshold: .3,
 
                 perturb: {enabled: false},
                 mergeStreetBlocks: {enabled: false}
