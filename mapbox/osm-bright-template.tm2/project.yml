@@ -10,19 +10,19 @@ bounds:
   - 180
   - 85.0511
 center: 
-  - -0.0002
-  - -0.0006
-  - 17
+  - 2.3451
+  - 48.8762
+  - 15
 description: ''
 format: "png8:m=h"
 interactivity_layer: ''
 layers: null
 maxzoom: 22
 minzoom: 0
-name: Iberville Map Style
-source: "mapbox:///nth.c5ad5b71"
+name: OSM Bright 2
+source: "mapbox:///mapbox.mapbox-streets-v5"
 styles: 
   - style.mss
-  - iberville-generated.mss
   - road.mss
+  - labels.mss
 template: ''

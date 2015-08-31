@@ -1,30 +1,15 @@
-Map { background-color: #fdeca4; }
+@land: #f8f4f0;
+@water: #a0c8f0;
 
-@water: #c3e6ff;
+Map { background-color: @land; }
+
 @baseRiverLineWidth: 5;
 @baseTextSize: 30;
 @sans: 'Source Sans Pro Regular';
 @sans_italic: 'Source Sans Pro Italic';
+@baseRoadWidth: 1.4;
 
 #iberville-generated {
-  line-join: round;
-  line-width: 1.4;
-  
-  
-  [cityBlock=1] {
-    line-color: #d4eecc;
-    polygon-fill: #e1c4f1;
-  }
-  
-  
-  [generationDebugging_polyAreaKm!=""] {
-    text-name: [generationDebugging_polyAreaKm];
-    text-face-name: @sans_italic;
-    text-fill: #036;
-    text-size: 20;
-    text-placement: interior;
-  }
-  
   [river=1] {
     line-color: @water;
     line-width: 5;
@@ -51,6 +36,8 @@ Map { background-color: #fdeca4; }
   [lake=1] {
     polygon-fill: @water;
     polygon-gamma: .6;
+    polygon-pattern-file: url(pattern/wave.png);
+    
     line-color: darken(@water, 20%);
     line-width: 5;
     [zoom>=16] { line-width: @baseRiverLineWidth/4; }
