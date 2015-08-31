@@ -1,4 +1,4 @@
-Map { background-color: white; }
+Map { background-color: #fdeca4; }
 
 @water: #c3e6ff;
 @baseRiverLineWidth: 5;
@@ -9,6 +9,14 @@ Map { background-color: white; }
 #iberville-generated {
   line-join: round;
   line-width: 1.4;
+  
+  [generationDebugging_reasonStopped!=""] {
+  }
+  
+  [cityBlock=1] {
+    line-color: #d4eecc;
+    polygon-fill: #e1c4f1;
+  }
   
   [river=1] {
     line-color: @water;

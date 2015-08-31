@@ -102,7 +102,7 @@ function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature)
             return unsubdividedPoly;
         }
 
-        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate()})),
+        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate(), cityBlock: true})),
             recursivelySubdividedFeatures = _(subdivided)
                 .map(
                     (subdividedPoly: GeoJSON.Feature) =>
