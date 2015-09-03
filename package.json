@@ -14,7 +14,7 @@
     "pretest": "tslint -c tslint.json *.ts util/**/*.ts lib/*.ts test/**/*.ts && tsc -p . && tsc -p test",
     "test": "TAP=1 loglevel=debug tape test/**/*.js | tap-difflet",
     "prepublish": "tsd reinstall",
-    "start": "./bin/iberville.js --out generated"
+    "start": "./bin/iberville.js --outFile:name generated"
   },
   "license": "MIT",
   "devDependencies": {

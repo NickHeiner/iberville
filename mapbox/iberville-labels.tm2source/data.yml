@@ -1,0 +1,27 @@
+_prefs: 
+  disabled: []
+  inspector: false
+  mapid: nth.2914f140
+  rev: s-a36bd749
+  saveCenter: true
+attribution: ''
+center: 
+  - -0.0058
+  - -0.0035
+  - 15
+description: Neighborhood names
+Layer: 
+  - id: iberville-labels
+    Datasource: 
+      file: /Users/nick.heiner/public-repos/iberville/mapbox/iberville-labels.json
+      layer: OGRGeoJSON
+      type: ogr
+    description: Neighborhood names
+    fields: 
+      name: String
+    properties: 
+      "buffer-size": 8
+    srs: +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
+maxzoom: 16
+minzoom: 5
+name: iberville-labels
