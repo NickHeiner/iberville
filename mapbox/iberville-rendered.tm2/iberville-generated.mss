@@ -1,3 +1,5 @@
+// Many of these styles are copied from the Mapbox OSM Bright template.
+
 @land: #f8f4f0;
 @water: #a0c8f0;
 
@@ -10,6 +12,18 @@ Map { background-color: @land; }
 @baseRoadWidth: 1.4;
 
 #iberville-generated {
+  [park=1] {
+    polygon-fill: #d8e8c8;
+    text-name: '[parkName]';
+    text-face-name: @sans_italic;
+    text-fill: #036;
+    text-size: 5;
+    text-halo-fill: fadeout(white, 30%);
+    text-halo-radius: .8;
+    text-wrap-width: 10;
+    text-wrap-before: true;
+  }
+  
   [river=1] {
     line-color: @water;
     line-width: 5;

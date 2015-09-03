@@ -51,6 +51,14 @@ const defaults: IGenerateCityOpts = {
             minimumBlockSizeKilometers: .1,
             maxBlockSizeKilometers: 4,
 
+            annotate: {
+                parks: {
+                    // Identifying street grids to be parks works, but it's too slow for large data sets,
+                    // so we provide an option to just disable it.
+                    enable: false
+                }
+            },
+
             perturb: {
                 enabled: true,
 
@@ -83,10 +91,45 @@ const defaults: IGenerateCityOpts = {
                 // so you'll see a lot of merged blocks unless this value is relatively high.
                 // Range: [0, 1]
                 mergeThreshold: .75
+            },
+
+            // To save time for the demo, we will add some smoke and mirrors.
+            // Note that this is coupled to the seed; if you change the seed, then
+            // the id values in this object will have totally different meanings
+            // and you'll get unexpected results.
+            magic: {
+                'street-block-2140': {
+                    park: true
+                },
+                'street-block-2137': {
+                    park: true,
+                    parkName: 'Bryant Park'
+                },
+                'street-block-806': {
+                    park: true,
+                    parkName: 'Hudson Park'
+                },
+                'street-block-4739': {
+                    park: true,
+                    parkName: 'Lakefront Park'
+                },
+                'street-block-4740': {
+                    park: true
+                },
+                'street-block-1311': {
+                    park: true,
+                    parkName: 'Willowbrook Park'
+                },
+                'street-block-1934': {
+                    park: true,
+                },
+                'street-block-3955': {
+                    park: true
+                },
             }
         },
         removeIntersectingElements: true,
-        seed: 'default-seed'
+        seed: 'default-seed',
     };
 
 export = defaults;

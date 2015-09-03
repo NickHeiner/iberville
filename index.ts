@@ -21,7 +21,6 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    // TODO Show how tweaking all these values changes the output.
     const opts = _.merge({}, defaultOpts, rawOpts),
         geoJson = createCity(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson),

@@ -196,6 +196,8 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
     assert(lakeHull, 'Invalid parameters passed to turfConcave; lakeHull was undefined.');
     logger.debug({lakeHull}, 'produced lake hull');
 
+    lakeHull.properties.lake = true;
+
     _.each(lake, (point: GeoJSON.Feature) => {
         point.properties['marker-color'] = color('red').hexString();
         point.properties.chosenForLake = true;

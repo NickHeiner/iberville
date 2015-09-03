@@ -1,0 +1,65 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                0,
+                0
+            ]
+        },"properties":{
+            "name": "Iberville City Center"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -0.0023125,
+                0.00025
+            ]
+        },"properties":{
+            "name": "Fishtown"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                0.00037948449558158383,
+                0.002
+            ]
+        },"properties":{
+            "name": "Finkton"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                0.0016,
+                -0.00010
+            ]
+        },"properties":{
+            "name": "Belmont"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -0.0008749999999999999,
+                -0.0023125000000000003
+            ]
+        },"properties":{
+            "name": "Funkytown"
+        }
+    }
+  ]
+}
