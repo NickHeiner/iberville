@@ -1,10 +1,9 @@
 import logger = require('../util/logger/index');
 import logStep = require('../util/logger/log-step');
+import partitionStreetGrid = require('./partition-street-grid');
 
 const traverse = require('traverse'),
     turfArea = require('turf-area'),
-    turfIntersect = require('turf-intersect'),
-    turf = require('turf'),
     _ = require('lodash');
 
 function annotateStreetGrid(opts: IGenerateCityOpts, streetGrid: GeoJSON.FeatureCollection): GeoJSON.FeatureCollection {
@@ -17,43 +16,25 @@ function annotateStreetGrid(opts: IGenerateCityOpts, streetGrid: GeoJSON.Feature
                         areaSqM: turfArea(poly)
                     }), true);
                 }
-            });
+            }),
+            {partitions, partitionGrid} = partitionStreetGrid(withArea);
 
         return traverse(withArea).map(function(node: any) {
                 if (this.key === 'properties'
                     && node.generationDebugging_reasonStopped !== 'area below minimum block size') {
 
-                    const expandedStreetBlock = turf.buffer(this.parent.node, .01, 'kilometers').features[0];
+                    const neighbors = partitions[node.id],
+                        averageNeighborAreaSqM = _(neighbors).map('properties').map('areaSqM').sum() / neighbors.length;
 
-                    logger.debug({
-                        expandedStreetBlock,
-                        orig: this.parent.node
-                    }, 'Expanded street block to find neighbors');
-
-                    const neighbors = _(withArea.features)
-                        .sample(Math.min(withArea.features.length, 200))
-                        .reject((feature: GeoJSON.Feature): boolean => feature.properties.id === node.id)
-                        .filter((feature: GeoJSON.Feature): boolean => {
-                            try {
-                                return turfIntersect(feature, expandedStreetBlock);
-                            } catch (e) {
-                                // *le sigh* https://github.com/Turfjs/turf-intersect/issues/11
-                                logger.debug(e, 'Caught error on turf-intersect');
-                                return false;
-                            }
-                        }),
-
-                        averageNeighborAreaSqM = neighbors.map('properties').map('areaSqM').sum() / neighbors.size();
-
-                    logger.debug({
+                    logger.warn({
                         averageNeighborAreaSqM,
                         streetBlockId: node.id,
-                        countNeighbors: neighbors.size()
+                        countNeighbors: neighbors.length
                     }, 'Found average neighbor size.');
 
                     this.update(_.merge({}, node, {
                         averageNeighborAreaSqM,
-                        countNeighborsFound: neighbors.size(),
+                        countNeighborsFound: neighbors.length,
                         neighborAreaRatio: node.areaSqM / averageNeighborAreaSqM
                     }));
                 }
