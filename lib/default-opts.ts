@@ -51,6 +51,14 @@ const defaults: IGenerateCityOpts = {
             minimumBlockSizeKilometers: .1,
             maxBlockSizeKilometers: 4,
 
+            annotate: {
+                parks: {
+                    // Identifying street grids to be parks works, but it's too slow for large data sets,
+                    // so we provide an option to just disable it.
+                    enable: false
+                }
+            },
+
             perturb: {
                 enabled: true,
 
@@ -83,10 +91,11 @@ const defaults: IGenerateCityOpts = {
                 // so you'll see a lot of merged blocks unless this value is relatively high.
                 // Range: [0, 1]
                 mergeThreshold: .75
-            }
+            },
+            magic: {}
         },
         removeIntersectingElements: true,
-        seed: 'default-seed'
+        seed: 'default-seed',
     };
 
 export = defaults;

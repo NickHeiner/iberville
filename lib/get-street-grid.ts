@@ -5,6 +5,7 @@ import mergeStreetBlocks = require('./merge-street-blocks');
 import perturbStreetGrid = require('./perturb-street-grid');
 import annotateStreetGrid = require('./annotate-street-grid');
 import sortCityBlocks = require('./sort-city-blocks');
+import addMagic = require('./add-magic');
 
 const turfBboxPolygon = require('turf-bbox-polygon'),
     turfArea = require('turf-area'),
@@ -58,7 +59,8 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         _.partial(mergeStreetBlocks, opts),
         _.partial(perturbStreetGrid, opts),
         _.partial(annotateStreetGrid, opts),
-        sortCityBlocks
+        sortCityBlocks,
+        _.partial(addMagic, opts)
     )(baseGridPoly);
 }
 

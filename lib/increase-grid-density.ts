@@ -13,16 +13,11 @@ const _ = require('lodash'),
     turfArea = require('turf-area'),
     turfFeatureCollection = require('turf-featurecollection'),
     turfDistance = require('turf-distance'),
-    turfCentroid = require('turf-centroid'),
-    shortid = require('shortid');
+    turfCentroid = require('turf-centroid');
 
 function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
         simplexNoiseGenerator = new simplexNoise(pseudoRandomNumberGenerator);
-
-    // This doesn't work, and I'm not sure why.
-    // Maybe I'm misunderstanding something.
-    shortid.seed(opts.seed);
 
     function increaseGridDensityRec(poly: GeoJSON.Feature, subdivisionLevel: number): GeoJSON.FeatureCollection {
         const childLogger = logger.child({poly: poly});
@@ -109,7 +104,8 @@ function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature)
             return unsubdividedPoly;
         }
 
-        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate(), cityBlock: true})),
+        // I'm using _.uniqueId instead of shortid here because of https://github.com/dylang/shortid/issues/45
+        const subdivided = subdivideSquare(poly, () => ({id: _.uniqueId('street-block-'), cityBlock: true})),
             recursivelySubdividedFeatures = _(subdivided)
                 .map(
                     (subdividedPoly: GeoJSON.Feature) =>

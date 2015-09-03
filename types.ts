@@ -35,6 +35,11 @@ interface IGenerateCityOpts {
             distance: number;
             units: string;
         }
+        annotate: {
+            parks: {
+                enable: boolean;
+            }
+        }
         noiseSubdivisionBaseThreshold: number;
         noiseSubdivisionThresholdCoefficient: number;
         noiseThresholdDistanceFromCenterCoefficient: number;
@@ -54,6 +59,9 @@ interface IGenerateCityOpts {
         mergeStreetBlocks: {
             enabled: boolean;
             mergeThreshold: number;
+        }
+        magic: {
+            [blockId: string]: Object
         }
     };
     removeIntersectingElements: boolean;

@@ -21,7 +21,8 @@ function annotateStreetGrid(opts: IGenerateCityOpts, streetGrid: GeoJSON.Feature
 
         return traverse(withArea).map(function(node: any) {
                 if (this.key === 'properties'
-                    && node.generationDebugging_reasonStopped !== 'area below minimum block size') {
+                    && node.generationDebugging_reasonStopped !== 'area below minimum block size'
+                    && opts.streetGrid.annotate.parks.enable) {
 
                     const expandedStreetBlock = turf.buffer(this.parent.node, .01, 'kilometers').features[0];
 
