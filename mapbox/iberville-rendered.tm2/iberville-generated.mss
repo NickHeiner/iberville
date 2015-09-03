@@ -12,17 +12,6 @@ Map { background-color: @land; }
 @baseRoadWidth: 1.4;
 
 #iberville-generated {
-  [name!=""] {
-    text-name: '[name]';
-    text-face-name: @sans_italic;
-    text-fill: #036;
-    text-size: 25;
-    text-halo-fill: fadeout(white, 30%);
-    text-halo-radius: .8;
-    text-wrap-width: 10;
-    text-wrap-before: true;
-  }
-  
   [park=1] {
     polygon-fill: #d8e8c8;
     text-name: '[parkName]';

@@ -5,3 +5,12 @@
     - -0.00019311904907226562
   tags: 
     - userbookmark
+  index: 0
+- place_name: Красноярский край, Russia
+  zoom: 12
+  center: 
+    - 70.11719974884296
+    - 98.40522766113281
+  tags: 
+    - userbookmark
+  index: 1
