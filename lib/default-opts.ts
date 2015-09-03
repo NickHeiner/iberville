@@ -102,15 +102,28 @@ const defaults: IGenerateCityOpts = {
                     park: true
                 },
                 'street-block-2137': {
-                    park: true
+                    park: true,
+                    parkName: 'Bryant Park'
                 },
                 'street-block-806': {
-                    park: true
+                    park: true,
+                    parkName: 'Hudson Park'
                 },
                 'street-block-4739': {
-                    park: true
+                    park: true,
+                    parkName: 'Lakefront Park'
                 },
                 'street-block-4740': {
+                    park: true
+                },
+                'street-block-1311': {
+                    park: true,
+                    parkName: 'Willowbrook Park'
+                },
+                'street-block-1934': {
+                    park: true,
+                },
+                'street-block-3955': {
                     park: true
                 },
             }

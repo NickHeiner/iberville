@@ -14,6 +14,14 @@ Map { background-color: @land; }
 #iberville-generated {
   [park=1] {
     polygon-fill: #d8e8c8;
+    text-name: '[parkName]';
+    text-face-name: @sans_italic;
+    text-fill: #036;
+    text-size: 5;
+    text-halo-fill: fadeout(white, 30%);
+    text-halo-radius: .8;
+    text-wrap-width: 10;
+    text-wrap-before: true;
   }
   
   [river=1] {
