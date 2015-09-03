@@ -92,7 +92,28 @@ const defaults: IGenerateCityOpts = {
                 // Range: [0, 1]
                 mergeThreshold: .75
             },
-            magic: {}
+
+            // To save time for the demo, we will add some smoke and mirrors.
+            // Note that this is coupled to the seed; if you change the seed, then
+            // the id values in this object will have totally different meanings
+            // and you'll get unexpected results.
+            magic: {
+                'street-block-2140': {
+                    park: true
+                },
+                'street-block-2137': {
+                    park: true
+                },
+                'street-block-806': {
+                    park: true
+                },
+                'street-block-4739': {
+                    park: true
+                },
+                'street-block-4740': {
+                    park: true
+                },
+            }
         },
         removeIntersectingElements: true,
         seed: 'default-seed',
