@@ -1,0 +1,25 @@
+_prefs: 
+  mapid: ''
+  saveCenter: true
+_properties: {}
+attribution: ''
+bounds: 
+  - -180
+  - -85.0511
+  - 180
+  - 85.0511
+center: 
+  - -0.004
+  - -0.0034
+  - 15
+description: ''
+format: "png8:m=h"
+interactivity_layer: ''
+layers: null
+maxzoom: 16
+minzoom: 12
+name: ''
+source: "mapbox:///nth.c5ad5b71"
+styles: 
+  - style.mss
+template: ''

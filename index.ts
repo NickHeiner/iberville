@@ -3,6 +3,7 @@
 import createCity = require('./lib/create-city');
 import logger = require('./util/logger/index');
 import defaultOpts = require('./lib/default-opts');
+import presets = require('./lib/presets');
 
 import './types';
 
@@ -21,7 +22,11 @@ interface IGeoJsonFormatError extends Error {
 }
 
 function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
-    const opts = _.merge({}, defaultOpts, rawOpts),
+    const preset = presets[rawOpts.presetName] || {};
+
+    logger.warn({preset, presetName: rawOpts.presetName}, 'Using preset');
+
+    const opts = _.merge({}, defaultOpts, rawOpts, preset),
         geoJson = createCity(_.omit(opts, 'outFileName')),
         errors = geoJsonHint.hint(geoJson),
         geoJsonHash = md5(JSON.stringify(geoJson));

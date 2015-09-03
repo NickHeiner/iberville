@@ -1,0 +1,25 @@
+_prefs: 
+  mapid: ''
+  saveCenter: true
+_properties: {}
+attribution: ''
+bounds: 
+  - -180
+  - -85.0511
+  - 180
+  - 85.0511
+center: 
+  - 0
+  - 0.0006
+  - 17
+description: ''
+format: "png8:m=h"
+interactivity_layer: ''
+layers: null
+maxzoom: 20
+minzoom: 12
+name: ''
+source: "tmsource:///Users/nick.heiner/public-repos/iberville/mapbox/iberville-generated.tm2source"
+styles: 
+  - style.mss
+template: ''

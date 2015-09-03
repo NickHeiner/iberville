@@ -70,6 +70,7 @@ interface IGenerateCityOpts {
 interface ICreateCityOpts extends IGenerateCityOpts {
     outFileName: string;
     errFileName: string;
+    presetName?: string;
 }
 
 interface ILSystem {
