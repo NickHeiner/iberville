@@ -2,7 +2,7 @@ _prefs:
   disabled: []
   inspector: false
   mapid: nth.c5ad5b71
-  rev: s-defe6f2a
+  rev: s-b171319f
   saveCenter: true
 attribution: Nick Heiner
 center: 
@@ -26,6 +26,7 @@ Layer:
       generationDebugging_reasonStopped: String
       generationDebugging_threshold: Number
       merged: Number
+      park: Number
       river: Number
     properties: 
       "buffer-size": 8

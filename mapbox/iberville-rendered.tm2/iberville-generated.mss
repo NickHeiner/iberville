@@ -10,6 +10,10 @@ Map { background-color: @land; }
 @baseRoadWidth: 1.4;
 
 #iberville-generated {
+  [park=1] {
+    polygon-fill: #d8e8c8;
+  }
+  
   [river=1] {
     line-color: @water;
     line-width: 5;
