@@ -61,6 +61,7 @@ interface IGenerateCityOpts {
 
 interface ICreateCityOpts extends IGenerateCityOpts {
     outFileName: string;
+    errFileName: string;
 }
 
 interface ILSystem {

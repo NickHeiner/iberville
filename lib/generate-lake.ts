@@ -3,11 +3,12 @@ import logger = require('../util/logger/index');
 const _ = require('lodash'),
     perlin = require('perlin'),
     Alea = require('alea'),
+    assert = require('assert'),
     color = require('color'),
     turfDistance = require('turf-distance'),
-    turfPointGrid = require('turf-point-grid'),
-    turfConcave = require('turf-concave'),
-    turfFeatureCollection = require('turf-featurecollection');
+    turfPolygon = require('turf-polygon'),
+    turfPoint = require('turf-point'),
+    turfPointGrid = require('turf-point-grid');
 
 interface INoisePoint {
     point: GeoJSON.Feature;
@@ -100,30 +101,34 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
             possiblePointsLen: possiblePoints.length
         }, 'Preparing to distinguish new lake points and non lake points');
 
-        const pointsByDistance =
-                _(possiblePoints)
-                    .map((noisePoint: INoisePoint) => {
-                        const distance = _(lakePoints)
+        const {newLakePoints, nonLakePoints} =
+            _.reduce(
+                possiblePoints,
+                (
+                    {newLakePoints, nonLakePoints}: {newLakePoints: INoisePoint[], nonLakePoints: INoisePoint[]},
+                    noisePoint: INoisePoint
+                ) => {
+                    const distance = _(lakePoints)
                             .map(({point}: INoisePoint) => turfDistance(noisePoint.point, point))
-                            .min();
+                            .min(),
 
-                        return _.merge({}, noisePoint, {distance});
-                    }),
+                         noisePointDistance: INoisePointDistance = _.merge({}, noisePoint, {distance}),
+                         shouldAddPointToLake = shouldAddToLake(noisePointDistance);
 
-            newLakePoints = pointsByDistance
-                .filter(shouldAddToLake)
-                .each(({point}: INoisePoint) => {
-                    point.properties.lakeIterationAdded = iterationCount;
-                })
-                .value(),
+                    if (shouldAddPointToLake) {
+                        noisePoint.point.properties.lakeIterationAdded = iterationCount;
 
-            nonLakePoints = pointsByDistance
-                .reject(shouldAddToLake)
-                .each(({point}: INoisePoint) => {
-                    point.properties.lakeIterationsSkipped = point.properties.lakeIterationsSkipped || [];
-                    point.properties.lakeIterationsSkipped.push(iterationCount);
-                })
-                .value();
+                        return {newLakePoints: newLakePoints.concat([noisePoint]), nonLakePoints};
+                    } else {
+                        noisePoint.point.properties.lakeIterationsSkipped =
+                            noisePoint.point.properties.lakeIterationsSkipped || [];
+                        noisePoint.point.properties.lakeIterationsSkipped.push(iterationCount);
+
+                        return {newLakePoints, nonLakePoints: nonLakePoints.concat([noisePoint])};
+                    }
+
+                }, {newLakePoints: [], nonLakePoints: []}
+            );
 
         logger.debug({
             newLakePointsLen: newLakePoints.length, nonLakePointsLen: nonLakePoints.length
@@ -141,22 +146,63 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
     }
 
     const {lake, nonLake} = _.mapValues(growLake([maxNoisePoint], nonMaxPoints, 0), toGeoJson),
-        lakeHull = turfConcave(turfFeatureCollection(lake), .01, 'kilometers');
+        lakePerimeter = _(lake)
+            .filter((point: GeoJSON.Feature): boolean => {
+                const uniqDistances = _(lake)
+                    .map((otherPoint: GeoJSON.Point): number => turfDistance(point, otherPoint))
+                    .filter((distance: number) => distance < opts.lake.noiseResolution.distance + 1e-5)
+                    .value()
+                    .length;
 
-    if (!lakeHull) {
-        throw new Error('Invalid parameters passed to turfConcave; lakeHull was undefined.');
+                // tisk tisk
+                point.properties.uniqueDistances = uniqDistances;
+
+                return uniqDistances < 5;
+            })
+            .map('geometry')
+            .map('coordinates')
+            .value();
+
+    function getOrderedLakePerimeter(sortedPoints: number[][], unsortedPoints: number[][]): number[][] {
+        if (!unsortedPoints.length) {
+            return sortedPoints.concat([_.head(sortedPoints)]);
+        }
+
+        if (!sortedPoints.length) {
+            return getOrderedLakePerimeter([_.head(unsortedPoints)], _.tail(unsortedPoints));
+        }
+
+        const mostRecentlyAddedPoint: number[] = _.last(sortedPoints),
+            closestUnsortedPoint = _(unsortedPoints)
+                .sortBy((point: number[]) => turfDistance(turfPoint(point), turfPoint(mostRecentlyAddedPoint)))
+                .first(),
+            unsortedPointsWithoutClosest =
+                _.reject(unsortedPoints, (point: number[]) => _.isEqual(point, closestUnsortedPoint));
+
+        assert(
+            unsortedPoints.length === unsortedPointsWithoutClosest.length + 1,
+            'removing the closest point should have only removed a single element from the list'
+        );
+
+        return getOrderedLakePerimeter(sortedPoints.concat([closestUnsortedPoint]), unsortedPointsWithoutClosest);
     }
 
-    lakeHull.properties.lake = true;
+    const orderedLakePerimeter = getOrderedLakePerimeter([], lakePerimeter);
+
+    logger.debug({orderedLakePerimeter}, 'producted lake perimeter');
+
+    const lakeHull: GeoJSON.Feature = turfPolygon([orderedLakePerimeter]);
+
+    assert(lakeHull, 'Invalid parameters passed to turfConcave; lakeHull was undefined.');
+    logger.debug({lakeHull}, 'produced lake hull');
 
     _.each(lake, (point: GeoJSON.Feature) => {
         point.properties['marker-color'] = color('red').hexString();
         point.properties.chosenForLake = true;
     });
 
-    logger.debug({lakeHull}, 'produced lake hull');
-
-    return [lakeHull]
+    return []
+        .concat(opts.lake.debug.omitLake ? [] : lakeHull)
         .concat(opts.lake.debug.includeNoisePointsInOutput ? nonLake : [])
         .concat(opts.lake.debug.includeLakePointsInOutput ? lake : []);
 }

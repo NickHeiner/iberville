@@ -38,11 +38,12 @@ function iberville(rawOpts: ICreateCityOpts): Q.IPromise<void> {
     logger.debug({geoJson: geoJson}, 'Produced geoJson');
 
     if (errors.length) {
-        const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');
-        err.errors = errors;
-        const deferred = q.defer();
-        deferred.reject(err);
-        return deferred.promise;
+        logger.info({errFileName: opts.errFileName}, 'Writing invalid geojson for debugging');
+        return qFs.write(opts.errFileName + '.geojson', JSON.stringify(geoJson, null, 2)).then(() => {
+            const err = <IGeoJsonFormatError> new Error('Bug: invalid GeoJson was produced');
+            err.errors = errors;
+            throw err;
+        });
     }
 
     const fileWrites: Q.IPromise<void>[] = [];

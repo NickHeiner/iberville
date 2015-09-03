@@ -10,10 +10,6 @@ Run `npm start` and copy the output of into http://geojson.io/ to see what was r
 ### TODO / Ideas
 * Add
     * Parks
-    * Rivers
-    * Lakes
-* Make non-square city blocks
-* Tweak params to have more gradations of block sizes
 * Convert all the polygons into lines so the roads are represented in a more intuitive manner
     * Make some roads wider than others
 
