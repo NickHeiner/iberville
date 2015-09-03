@@ -3,6 +3,8 @@ import logger = require('../util/logger/index');
 import increaseGridDensity = require('./increase-grid-density');
 import mergeStreetBlocks = require('./merge-street-blocks');
 import perturbStreetGrid = require('./perturb-street-grid');
+import annotateStreetGrid = require('./annotate-street-grid');
+import sortCityBlocks = require('./sort-city-blocks');
 
 const turfBboxPolygon = require('turf-bbox-polygon'),
     turfArea = require('turf-area'),
@@ -54,7 +56,9 @@ function getStreetGrid(opts: IGenerateCityOpts): GeoJSON.FeatureCollection {
         _.partial(increaseGridDensity, opts),
         _.partial(removeLargeBlocks, opts),
         _.partial(mergeStreetBlocks, opts),
-        _.partial(perturbStreetGrid, opts)
+        _.partial(perturbStreetGrid, opts),
+        _.partial(annotateStreetGrid, opts),
+        sortCityBlocks
     )(baseGridPoly);
 }
 

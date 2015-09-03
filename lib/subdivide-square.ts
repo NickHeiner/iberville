@@ -3,7 +3,7 @@ const turfExtent = require('turf-extent'),
     _ = require('lodash');
 
 function subdivideSquare(square: GeoJSON.Feature, getProps: () => Object): GeoJSON.Feature[] {
-    const [west, south, east, north]: number[] = turfExtent(square),
+    const [south, west, north, east]: number[] = turfExtent(square),
         nsLen = (north - south) / 2,
         ewLen = (east - west) / 2;
 

@@ -10,7 +10,7 @@ const defaults: IGenerateCityOpts = {
         // to be in terms of the radius.
         radius: .004,
         river: {
-            enable: false,
+            enable: true,
             voronoiPointCount: 1000,
             debug: {
                 includeVoronoiPointsInOutput: false,
@@ -18,7 +18,7 @@ const defaults: IGenerateCityOpts = {
             }
         },
         lake: {
-            enable: false,
+            enable: true,
             noiseResolution: {
                 distance: .007,
                 units: 'kilometers',
@@ -48,11 +48,30 @@ const defaults: IGenerateCityOpts = {
             // Increasing this value makes blocks further away from the city center less likely to subdivide.
             noiseThresholdDistanceFromCenterCoefficient: 2.5,
 
-            minimumBlockSizeKilometers: .2,
+            minimumBlockSizeKilometers: .1,
             maxBlockSizeKilometers: 4,
 
             perturb: {
-                enabled: true
+                enabled: true,
+
+                // Start with a base amount to perturb by
+                base: {
+                    lat: .0005,
+                    long: 0
+                },
+
+                // We want the perturbation amount to be relative to the overall size.
+                // This makes it look more realistic. If we try to do a one-size-fits-all
+                // approach, then the largest polys may be only trivially perturbed
+                // relative to their size, and the smallest polys may be totally distorted.
+                perturbAreaCoefficient: .00012,
+
+                // Increase this value to make street be perturbed less often.
+                // 0 = always perturb; 1 = never perturb.
+                // Range: [0, 1]
+                shouldPerturbThreshold: .5,
+
+                shouldPerturbThresholdForSmallestBlocks: .9
             },
 
             mergeStreetBlocks: {

@@ -11,6 +11,7 @@ function removeIntersectingElements(
 
     if (!opts.removeIntersectingElements) {
         logger.debug('Skipping removing intersecting elements because opts.removeIntersectingElements == false');
+        return turfFeatureCollection(_(elements).map('features').flatten().value());
     }
 
     const features = _(elements)
@@ -27,7 +28,15 @@ function removeIntersectingElements(
                 (feature: GeoJSON.Feature) =>
                     _.any(
                         higherPriorityFeatures,
-                        (higherPriorityFeature: GeoJSON.Feature) => turfIntersect(higherPriorityFeature, feature)
+                        (higherPriorityFeature: GeoJSON.Feature) => {
+                            try {
+                                return turfIntersect(higherPriorityFeature, feature);
+                            } catch (e) {
+                                // *le sigh* https://github.com/Turfjs/turf-intersect/issues/11
+                                logger.debug(e, 'Caught error on turf-intersect');
+                                return false;
+                            }
+                        }
                     )
             );
         })

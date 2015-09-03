@@ -6,8 +6,11 @@
     "noEmitOnError": true
   },
   "files": [
+    "unit/is-equal-float.ts",
     "unit/l-system.ts",
     "unit/increase-grid-density.ts",
-    "unit/subdivide-square.ts"
+    "unit/subdivide-square.ts",
+    "unit/get-street-grid.ts",
+    "unit/sort-city-blocks.ts"
   ]
 }

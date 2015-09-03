@@ -63,7 +63,10 @@ function generateRiver(opts: IGenerateCityOpts): GeoJSON.Feature[] {
                 .map((riverLine: GeoJSON.Feature) => riverLine.geometry.coordinates)
                 .uniq()
                 .flatten()
-                .value()
+                .value(),
+            {
+                river: true
+            }
         );
 
     return [riverLineString]

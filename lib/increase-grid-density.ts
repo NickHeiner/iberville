@@ -1,9 +1,12 @@
 import logger = require('../util/logger/index');
 import subdivideSquare = require('./subdivide-square');
+import isEqualFloat = require('./is-equal-float');
 
 const _ = require('lodash'),
+    assert = require('assert'),
     alea = require('alea'),
     simplexNoise = require('simplex-noise'),
+    turfEnvelope = require('turf-envelope'),
     turfExtent = require('turf-extent'),
     turfPointGrid = require('turf-point-grid'),
     turfPoint = require('turf-point'),
@@ -16,6 +19,10 @@ const _ = require('lodash'),
 function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature): GeoJSON.FeatureCollection {
     const pseudoRandomNumberGenerator = new alea(opts.seed),
         simplexNoiseGenerator = new simplexNoise(pseudoRandomNumberGenerator);
+
+    // This doesn't work, and I'm not sure why.
+    // Maybe I'm misunderstanding something.
+    shortid.seed(opts.seed);
 
     function increaseGridDensityRec(poly: GeoJSON.Feature, subdivisionLevel: number): GeoJSON.FeatureCollection {
         const childLogger = logger.child({poly: poly});
@@ -102,7 +109,7 @@ function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature)
             return unsubdividedPoly;
         }
 
-        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate()})),
+        const subdivided = subdivideSquare(poly, () => ({id: shortid.generate(), cityBlock: true})),
             recursivelySubdividedFeatures = _(subdivided)
                 .map(
                     (subdividedPoly: GeoJSON.Feature) =>
@@ -111,11 +118,24 @@ function increaseGridDensity(opts: IGenerateCityOpts, basePoly: GeoJSON.Feature)
                 .flatten()
                 .value();
 
-        childLogger.debug({
-            subdividedIntoCount: recursivelySubdividedFeatures.length
-        }, 'Subdivided poly into new features');
+        childLogger.debug({subdivided}, 'Subdivided poly into new features');
 
-        return turfFeatureCollection(recursivelySubdividedFeatures);
+        const subdividedFeatureCollection = turfFeatureCollection(recursivelySubdividedFeatures),
+            parentEnvelope = turfEnvelope(poly),
+            subdividedEnvelope = turfEnvelope(subdividedFeatureCollection),
+            envelopesAreEqual = isEqualFloat(parentEnvelope, subdividedEnvelope);
+
+        logger[envelopesAreEqual ? 'debug' : 'warn'](
+            {parentEnvelope, subdividedEnvelope},
+            'Found envelopes for parent and subdivided polys.'
+        );
+
+        assert(
+            envelopesAreEqual,
+            'The subdivided street blocks must be contained within the parent street block, but they are not.'
+        );
+
+        return subdividedFeatureCollection;
     }
 
     return increaseGridDensityRec(basePoly, 1);

@@ -1,7 +1,7 @@
 # iberville
 Experimenting with procedurally generating a city map
 
-### Usage 
+### Usage
 I developed this on node `v0.12.7`.
 
 ### Demo
@@ -22,3 +22,4 @@ Run `npm start` and copy the output of into http://geojson.io/ to see what was r
 * Iterative development is your friend
 * Make everything a param that can be tweaked. Really interesting algorithms can easily be torpedoed by crappy params.
 * For once, I actually need to slow down and think about what I'm typing.
+* Async is not as helpful here because it's CPU-bound

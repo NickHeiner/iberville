@@ -135,7 +135,7 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
 
         return growLake(newLakePoints.concat(lakePoints), nonLakePoints, iterationCount + 1);
     }
-    
+
     if (opts.lake.debug.includeNoisePointsInOutput && opts.lake.debug.omitLake) {
         return _.map([maxNoisePoint].concat(nonMaxPoints), 'point');
     }
@@ -146,6 +146,8 @@ function generateLake(opts: IGenerateCityOpts): GeoJSON.Feature[] {
     if (!lakeHull) {
         throw new Error('Invalid parameters passed to turfConcave; lakeHull was undefined.');
     }
+
+    lakeHull.properties.lake = true;
 
     _.each(lake, (point: GeoJSON.Feature) => {
         point.properties['marker-color'] = color('red').hexString();

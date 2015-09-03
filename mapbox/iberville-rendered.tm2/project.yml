@@ -10,8 +10,8 @@ bounds:
   - 180
   - 85.0511
 center: 
-  - 0
-  - 0.001
+  - -0.0008
+  - -0.0006
   - 17
 description: ''
 format: "png8:m=h"
@@ -19,9 +19,10 @@ interactivity_layer: ''
 layers: null
 maxzoom: 22
 minzoom: 0
-name: ''
+name: Iberville Map Style
 source: "mapbox:///nth.c5ad5b71"
 styles: 
   - style.mss
   - iberville-generated.mss
+  - road.mss
 template: ''
