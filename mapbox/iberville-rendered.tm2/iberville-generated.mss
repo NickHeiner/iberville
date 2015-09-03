@@ -1,3 +1,5 @@
+// Many of these styles are copied from the Mapbox OSM Bright template.
+
 @land: #f8f4f0;
 @water: #a0c8f0;
 

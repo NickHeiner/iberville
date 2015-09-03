@@ -1,3 +1,5 @@
+// Many of these styles are copied from the Mapbox OSM Bright template.
+
 @motorway:          #fc8;
 @main:              #fea;
 @street:            #fff;
