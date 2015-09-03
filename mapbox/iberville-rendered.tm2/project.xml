@@ -204,6 +204,92 @@
   <Rule>
     <MaxScaleDenominator>2500</MaxScaleDenominator>
     <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="15" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="30" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" size="7.5" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="15" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="30" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" size="7.5" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
     <Filter>([lake] = 1) and ([river] = 1) and ([cityBlock] = 1)</Filter>
     <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linecap="round" stroke-linejoin="round" />
     <TextSymbolizer size="15" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" dy="1" max-char-angle-delta="15" ><![CDATA['Lake Unknown']]></TextSymbolizer>
@@ -317,15 +403,101 @@
     <MaxScaleDenominator>12500</MaxScaleDenominator>
     <MinScaleDenominator>5000</MinScaleDenominator>
     <Filter>([lake] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[parkName]]]></TextSymbolizer>
     <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[parkName]]]></TextSymbolizer>
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
   </Rule>
   <Rule>
     <MinScaleDenominator>12500</MinScaleDenominator>
     <Filter>([lake] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linejoin="round" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[parkName]]]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer size="15" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer size="30" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" size="7.5" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[parkName]]]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[parkName]]]></TextSymbolizer>
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer size="15" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer size="30" placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([lake] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+    <TextSymbolizer placement="interior" face-name="Source Sans Pro Italic" fill="#1b62a9" size="7.5" wrap-width="100" wrap-before="true" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" ><![CDATA['Lake Unknown']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[name]]]></TextSymbolizer>
+    <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
+    <PolygonPatternSymbolizer file="pattern/wave.png" />
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([lake] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[name]]]></TextSymbolizer>
     <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
@@ -333,7 +505,7 @@
   <Rule>
     <MaxScaleDenominator>2500</MaxScaleDenominator>
     <MinScaleDenominator>1500</MinScaleDenominator>
-    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <Filter>([lake] = 1) and ([name] != '')</Filter>
     <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
@@ -342,7 +514,7 @@
   <Rule>
     <MaxScaleDenominator>1500</MaxScaleDenominator>
     <MinScaleDenominator>750</MinScaleDenominator>
-    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <Filter>([lake] = 1) and ([name] != '')</Filter>
     <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
@@ -350,7 +522,7 @@
   </Rule>
   <Rule>
     <MaxScaleDenominator>5000</MaxScaleDenominator>
-    <Filter>([lake] = 1) and ([park] = 1)</Filter>
+    <Filter>([lake] = 1) and ([name] != '')</Filter>
     <LineSymbolizer stroke-width="2.5" stroke="#4895e2" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
@@ -359,16 +531,16 @@
   <Rule>
     <MaxScaleDenominator>12500</MaxScaleDenominator>
     <MinScaleDenominator>5000</MinScaleDenominator>
-    <Filter>([lake] = 1) and ([park] = 1)</Filter>
-    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[parkName]]]></TextSymbolizer>
+    <Filter>([lake] = 1) and ([name] != '')</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[name]]]></TextSymbolizer>
     <LineSymbolizer stroke-width="1.25" stroke="#4895e2" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
   </Rule>
   <Rule>
     <MinScaleDenominator>12500</MinScaleDenominator>
-    <Filter>([lake] = 1) and ([park] = 1)</Filter>
-    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[parkName]]]></TextSymbolizer>
+    <Filter>([lake] = 1) and ([name] != '')</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[name]]]></TextSymbolizer>
     <LineSymbolizer stroke="#4895e2" stroke-width="5" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#a0c8f0" gamma="0.6" />
     <PolygonPatternSymbolizer file="pattern/wave.png" />
@@ -461,75 +633,146 @@
     <MaxScaleDenominator>2500</MaxScaleDenominator>
     <MinScaleDenominator>1500</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="15" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>1500</MaxScaleDenominator>
     <MinScaleDenominator>750</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="30" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>5000</MaxScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="7.5" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>12500</MaxScaleDenominator>
     <MinScaleDenominator>5000</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="1.25" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MinScaleDenominator>12500</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1) and ([cityBlock] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke="#a0c8f0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>2500</MaxScaleDenominator>
     <MinScaleDenominator>1500</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="15" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>1500</MaxScaleDenominator>
     <MinScaleDenominator>750</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="30" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>5000</MaxScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer size="7.5" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MaxScaleDenominator>12500</MaxScaleDenominator>
     <MinScaleDenominator>5000</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1)</Filter>
-    <PolygonSymbolizer fill="#d8e8c8" />
     <LineSymbolizer stroke-width="1.25" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
   <Rule>
     <MinScaleDenominator>12500</MinScaleDenominator>
     <Filter>([river] = 1) and ([park] = 1)</Filter>
+    <LineSymbolizer stroke="#a0c8f0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
     <PolygonSymbolizer fill="#d8e8c8" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+    <TextSymbolizer size="15" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+    <TextSymbolizer size="30" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+    <TextSymbolizer size="7.5" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '') and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke="#a0c8f0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>2500</MaxScaleDenominator>
+    <MinScaleDenominator>1500</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="15" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>1500</MaxScaleDenominator>
+    <MinScaleDenominator>750</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="30" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>5000</MaxScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="2.5" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer size="7.5" face-name="Source Sans Pro Italic" fill="#003366" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <MinScaleDenominator>5000</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '')</Filter>
+    <LineSymbolizer stroke-width="1.25" stroke="#a0c8f0" stroke-linecap="round" stroke-linejoin="round" />
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <MinScaleDenominator>12500</MinScaleDenominator>
+    <Filter>([river] = 1) and ([name] != '')</Filter>
     <LineSymbolizer stroke="#a0c8f0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="20" dy="1" max-char-angle-delta="15" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" wrap-width="10" wrap-before="true" ><![CDATA['The River']]></TextSymbolizer>
   </Rule>
@@ -606,14 +849,25 @@
   </Rule>
   <Rule>
     <Filter>([park] = 1) and ([cityBlock] = 1)</Filter>
+    <LineSymbolizer stroke="#ffffff" stroke-linejoin="round" stroke-width="1.4" />
     <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[parkName]]]></TextSymbolizer>
-    <LineSymbolizer stroke="#ffffff" stroke-linejoin="round" stroke-width="1.4" />
   </Rule>
   <Rule>
     <Filter>([park] = 1)</Filter>
+    <LineSymbolizer stroke-linejoin="round" stroke-width="1.4" />
     <PolygonSymbolizer fill="#d8e8c8" />
     <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="5" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[parkName]]]></TextSymbolizer>
+  </Rule>
+  <Rule>
+    <Filter>([name] != '') and ([cityBlock] = 1)</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" placement="interior" ><![CDATA[[name]]]></TextSymbolizer>
+    <LineSymbolizer stroke="#ffffff" stroke-linejoin="round" stroke-width="1.4" />
+    <PolygonSymbolizer fill="#e9e6eb" />
+  </Rule>
+  <Rule>
+    <Filter>([name] != '')</Filter>
+    <TextSymbolizer face-name="Source Sans Pro Italic" fill="#003366" size="25" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="0.8" wrap-width="10" wrap-before="true" ><![CDATA[[name]]]></TextSymbolizer>
     <LineSymbolizer stroke-linejoin="round" stroke-width="1.4" />
   </Rule>
   <Rule>
